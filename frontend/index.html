@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Legal AI Drafting Assistant</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<div class="container">
+    <header class="header">
+        <i class="fas fa-scale-balanced fa-2x"></i>
+        <h1>Legal AI Drafting Assistant</h1>
+        <p>AI-powered Indian Legal Notice Generator | Bhopal, MP</p>
+    </header>
+
+    <main class="main-content">
+        <div class="form-card">
+            
+            <!-- ✅ NEW: Template Selector -->
+            <div class="form-group" style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                <label><i class="fas fa-file-alt"></i> Quick Templates</label>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <select id="templateSelect" style="flex: 1; min-width: 200px;">
+                        <option value="">📝 Custom (AI Generate)</option>
+                    </select>
+                    <button onclick="loadTemplate()" class="btn-secondary" style="white-space: nowrap;">
+                        <i class="fas fa-magic"></i> Load Template
+                    </button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="party1"><i class="fas fa-user-tie"></i> Party 1 (Your Client)</label>
+                <textarea id="party1" placeholder="ABC Pvt Ltd&#10;123 MG Road, Bhopal, MP 462001" rows="3"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="party2"><i class="fas fa-user-times"></i> Party 2 (Notice Recipient)</label>
+                <textarea id="party2" placeholder="XYZ Traders&#10;456 Indore Road, Bhopal, MP 462001" rows="3"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="dispute"><i class="fas fa-exclamation-triangle"></i> Dispute / Issue Details</label>
+                <textarea id="dispute" placeholder="Non-payment of ₹5,00,000 despite delivery of goods on 01-02-2026. Multiple reminders sent." rows="4"></textarea>
+            </div>
+
+            <!-- ✅ Action Buttons -->
+            <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+                <button id="generateBtn" onclick="generateDraft()" class="btn-primary" style="flex: 1;">
+                    <i class="fas fa-robot"></i> 
+                    <span id="btnText">Generate Legal Notice</span>
+                    <div id="btnSpinner" class="spinner" style="display:none;"></div>
+                </button>
+                <button onclick="saveNotice()" id="saveBtn" class="btn-secondary">
+                    <i class="fas fa-save"></i> Save
+                </button>
+            </div>
+
+            <!-- ✅ Output Section -->
+            <div id="outputSection" style="display:none; margin-top:20px;">
+                <div class="output-header">
+                    <label><i class="fas fa-file-contract"></i> Generated Legal Draft</label>
+                </div>
+                <textarea id="outputDraft" rows="16" readonly placeholder="Legal draft will appear here..."></textarea>
+                
+                <!-- ✅ Enhanced Download Section -->
+                <div style="margin-top:15px; display:flex; gap:10px; flex-wrap: wrap;">
+                    <button onclick="downloadPDF()" id="pdfBtn" class="btn-download">
+                        <i class="fas fa-file-pdf"></i> Download PDF
+                    </button>
+                    <input id="emailTo" placeholder="client@example.com" style="flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 6px;" />
+                    <button onclick="sendEmail()" class="btn-email">
+                        <i class="fas fa-paper-plane"></i> Email PDF
+                    </button>
+                </div>
+
+                <!-- ✅ History Section -->
+                <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                    <button onclick="loadHistory()" class="btn-secondary" style="width: 100%; margin-bottom: 10px;">
+                        <i class="fas fa-history"></i> Load My Notices History
+                    </button>
+                    <div id="historyList" style="max-height: 200px; overflow-y: auto;"></div>
+                </div>
+            </div>
+
+            <!-- Error Display -->
+            <div id="errorMessage" class="error-message" style="display:none;"></div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>
+            ⚠ AI-generated drafts are for <strong>informational purposes only</strong>. 
+            Always consult a licensed advocate before legal action.
+        </p>
+    </footer>
+</div>
+
+<!-- Loading Overlay -->
+<div id="loadingOverlay" class="loading-overlay" style="display:none;">
+    <div class="loader"></div>
+    <p>Generating professional legal notice...</p>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

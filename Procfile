@@ -1,1 +1,1 @@
-web: gunicorn legal_ai:app
+web: gunicorn app:app

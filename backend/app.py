@@ -19,12 +19,20 @@ from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
 import logging
 import traceback
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 logging.basicConfig(level=logging.DEBUG)
 
 
 load_dotenv()
 
 app = FastAPI()
+
+app.mount("/static", StaticFiles(directory="../frontend"), name="static")
+
+@app.get("/")
+async def serve_frontend():
+    return FileResponse("../frontend/index.html")
 
 app.add_middleware(
     CORSMiddleware,

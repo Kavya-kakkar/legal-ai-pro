@@ -1,5 +1,5 @@
 // Global variables
-let currentNoticeId = null;
+let currentNoticeId ;
 
 // Load templates when page loads
 window.onload = function() {

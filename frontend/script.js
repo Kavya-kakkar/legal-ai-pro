@@ -9,7 +9,7 @@ window.onload = function() {
 // ✅ 1. LOAD TEMPLATES (Fixes "Load Template" button)
 async function loadTemplates() {
     try {
-        const response = await fetch('http://localhost:8000/templates');
+        const response = await fetch('https://legal-ai-pro-1.onrender.com/templates');
         const data = await response.json();
         const select = document.getElementById('templateSelect');
         select.innerHTML = '<option value="">📝 Custom (AI Generate)</option>';
@@ -35,7 +35,7 @@ async function loadTemplate() {
 
     setLoading(true);
     try {
-        const response = await fetch(`http://localhost:8000/template/${templateName}`);
+        const response = await fetch(`https://legal-ai-pro-1.onrender.com/template/${templateName}`);
         if (!response.ok) throw new Error('Template not found');
         
         const data = await response.json();
@@ -64,7 +64,7 @@ async function generateDraft() {
     hideError();
 
     try {
-        const response = await fetch('http://localhost:8000/generate-legal-notice', {
+        const response = await fetch('https://legal-ai-pro-1.onrender.com/generate-legal-notice', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -108,7 +108,7 @@ async function saveNotice() {
 
     setLoading(true);
     try {
-        const response = await fetch('http://localhost:8000/save-notice', {
+        const response = await fetch('https://legal-ai-pro-1.onrender.com/save-notice', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -135,7 +135,7 @@ async function saveNotice() {
 async function loadHistory() {
     setLoading(true);
     try {
-        const response = await fetch('http://localhost:8000/history?limit=10');
+        const response = await fetch('https://legal-ai-pro-1.onrender.com/history?limit=10');
         const data = await response.json();
         const historyList = document.getElementById('historyList');
         historyList.innerHTML = '';
@@ -181,7 +181,7 @@ async function downloadPDF() {
         const party2 = document.getElementById('party2').value;
         const dispute = document.getElementById('dispute').value;
 
-        const response = await fetch('http://localhost:8000/download-pdf', {
+        const response = await fetch('https://legal-ai-pro-1.onrender.com/download-pdf', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -232,7 +232,7 @@ async function sendEmail() {
         const party2 = document.getElementById('party2').value;
         const dispute = document.getElementById('dispute').value;
 
-        const response = await fetch('http://localhost:8000/email-pdf', {
+        const response = await fetch('https://legal-ai-pro-1.onrender.com/email-pdf', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

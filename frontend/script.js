@@ -245,10 +245,13 @@ async function sendEmail() {
                 recipient_email: emailTo
             })
         });
-
         const data = await response.json();
-        showSuccess(`✅ Email sent to ${data.recipient}!`);
+        if (!response.ok) {
+            throw new Error(data.detail || "Email failed");
+        }
+        showSuccess(`✅ Email sent to ${emailTo}!`);
         document.getElementById('emailTo').value = '';
+
     } catch (error) {
         showError(`Email failed: ${error.message}`);
     } finally {

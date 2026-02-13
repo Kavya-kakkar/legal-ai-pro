@@ -287,7 +287,7 @@ async def email_pdf(request: EmailRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Email failed: {str(e)}")
 
-@app.get("/health")
+@app.get("/health",methods=["GET" , "HEAD"])
 async def health():
     return {"status": "ok"}
 

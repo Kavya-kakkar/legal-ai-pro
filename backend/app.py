@@ -13,12 +13,10 @@ import io
 from dotenv import load_dotenv
 import sqlite3
 from datetime import datetime
-import smtplib
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-from email.mime.application import MIMEApplication
 import logging
 import traceback
+import requests
+import base64
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 logging.basicConfig(level=logging.DEBUG)
@@ -218,26 +216,46 @@ async def get_history(limit: int = Query(10)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+def send_email_with_pdf(recipient_email, pdf_bytes, subject):
+    api_key = os.getenv("RESEND_API_KEY")
+
+    if not api_key:
+        raise Exception("RESEND_API_KEY not set")
+
+    encoded_pdf = base64.b64encode(pdf_bytes).decode()
+
+    response = requests.post(
+        "https://api.resend.com/emails",
+        headers={
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json"
+        },
+        json={
+            "from": "onboarding@resend.dev",
+            "to": recipient_email,
+            "subject": subject,
+            "html": "<p>Please find your legal notice attached.</p>",
+            "attachments": [
+                {
+                    "filename": "Legal_Notice.pdf",
+                    "content": encoded_pdf
+                }
+            ]
+        }
+    )
+
+    return response.status_code
+
 # ✅ FEATURE 5: EMAIL PDF
 @app.post("/email-pdf")
 async def email_pdf(request: EmailRequest):
-    print("🔍 EMAIL DEBUG START")
-    
     try:
-        sender_email = os.getenv("GMAIL_EMAIL")
-        sender_password = os.getenv("GMAIL_PASSWORD")
-        
-        if not sender_email or not sender_password:
-            raise HTTPException(status_code=500, detail="Missing .env credentials")
-        
-        print(f"🔍 FROM: {sender_email} → TO: {request.recipient_email}")
-        
-        # ✅ GENERATE FULL PDF
+        # Generate PDF
         pdf_buffer = io.BytesIO()
         doc = SimpleDocTemplate(pdf_buffer, pagesize=letter)
         styles = getSampleStyleSheet()
         story = []
-        
+
         story.append(Paragraph("LEGAL NOTICE", styles['Title']))
         story.append(Spacer(1, 12))
         story.append(Paragraph(f"Claimant: {request.party1_name}", styles['Normal']))
@@ -247,49 +265,27 @@ async def email_pdf(request: EmailRequest):
         story.append(Paragraph(f"Address: {request.party2_address}", styles['Normal']))
         story.append(Spacer(1, 12))
         story.append(Paragraph(request.draft_text, styles['Normal']))
-        
+
         doc.build(story)
         pdf_buffer.seek(0)
         pdf_data = pdf_buffer.getvalue()
-        
-        print(f"🔍 PDF SIZE: {len(pdf_data)} bytes")
-        
-        # ✅ CREATE EMAIL
-        msg = MIMEMultipart()
-        msg['From'] = sender_email
-        msg['To'] = request.recipient_email
-        msg['Subject'] = f"Legal Notice - {request.party1_name} vs {request.party2_name}"
-        
-        msg.attach(MIMEText(f"""
-        Legal Notice Document
-        Party 1: {request.party1_name}
-        Party 2: {request.party2_name}
-        Issue: {request.issue}
-        PDF attached above.
-        """, 'plain'))
-        
-        # ✅ ATTACH PDF
-        pdf_attachment = MIMEApplication(pdf_data, _subtype="pdf")
-        pdf_attachment.add_header('Content-Disposition', 'attachment', filename='Legal_Notice.pdf')
-        msg.attach(pdf_attachment)
-        
-        # ✅ SEND EMAIL (THIS WAS MISSING!)
-        print("🔍 SENDING EMAIL...")
-        server = smtplib.SMTP('smtp.gmail.com', 587)
-        server.starttls()
-        server.login(sender_email, sender_password)
-        server.sendmail(sender_email, request.recipient_email, msg.as_string())
-        server.quit()
-        
-        print("✅ EMAIL SENT SUCCESS!")
+
+        # Send email using Resend
+        subject = f"Legal Notice - {request.party1_name} vs {request.party2_name}"
+
+        status = send_email_with_pdf(
+            request.recipient_email,
+            pdf_data,
+            subject
+        )
+
+        if status not in [200, 201]:
+            raise HTTPException(status_code=500, detail="Email sending failed")
+
         return {"status": "Email sent successfully", "recipient": request.recipient_email}
-        
+
     except Exception as e:
-        print(f"❌ EMAIL FAILED: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Email failed: {str(e)}")
-
-
-
 
 @app.get("/health")
 async def health():

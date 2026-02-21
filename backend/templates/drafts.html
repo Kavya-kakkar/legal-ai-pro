@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Legal AI Assistant - Draft Preview</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1142d4",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101522",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .document-shadow {
+            box-shadow: 0 4px 20px -2px rgba(17, 66, 212, 0.08), 0 2px 4px -1px rgba(17, 66, 212, 0.04);
+        }
+        .paper-page {
+            width: 100%;
+            max-width: 800px;
+            min-height: 1120px;
+        }
+        @media print {
+            .no-print { display: none; }
+            .print-only { display: block; }
+            .bg-background-light { background-color: white !important; }
+            .document-shadow { box-shadow: none; border: none; }
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-800 dark:text-slate-200 min-h-screen flex flex-col">
+<!-- Navigation Header -->
+<nav class="sticky top-0 z-50 bg-white dark:bg-background-dark border-b border-primary/10 px-6 py-4 flex items-center justify-between no-print">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 bg-primary rounded flex items-center justify-center">
+<span class="material-icons text-white text-sm">gavel</span>
+</div>
+<span class="font-bold text-xl tracking-tight text-primary">Legal AI Assistant</span>
+</div>
+<div class="h-6 w-[1px] bg-primary/20 mx-2"></div>
+<nav class="flex items-center text-sm font-medium text-slate-500">
+<a class="hover:text-primary transition-colors" href="#drafts">Drafts</a>
+<span class="material-icons text-xs mx-2">chevron_right</span>
+<span class="text-slate-900 dark:text-white">Notice of Breach</span>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<span class="flex items-center gap-2 px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-semibold rounded-full">
+<span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                DRAFT READY
+            </span>
+<a href="#profile" class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary/20 transition-colors">
+<span class="material-icons">account_circle</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-grow flex flex-col items-center py-8 px-4 sm:px-6 lg:px-8">
+<!-- Action Toolbar -->
+<div class="w-full max-w-[800px] mb-6 flex flex-wrap items-center justify-between gap-4 no-print">
+<div class="flex items-center gap-2">
+<a href="#edit" class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-primary/20 rounded-lg text-sm font-semibold text-slate-700 dark:text-slate-300 hover:border-primary transition-all">
+<span class="material-icons text-sm text-primary">edit</span>
+                    Edit Draft
+                </a>
+<a href="#save" class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-primary/20 rounded-lg text-sm font-semibold text-slate-700 dark:text-slate-300 hover:border-primary transition-all">
+<span class="material-icons text-sm text-primary">save</span>
+                    Save Copy
+                </a>
+</div>
+<div class="flex items-center gap-2">
+<a href="#download" class="flex items-center gap-2 px-6 py-2 bg-primary text-white rounded-lg text-sm font-bold shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all">
+<span class="material-icons text-sm">picture_as_pdf</span>
+                    Download PDF
+                </a>
+<a href="#print" class="w-10 h-10 flex items-center justify-center bg-white dark:bg-slate-800 border border-primary/20 rounded-lg text-slate-600 dark:text-slate-400 hover:text-primary transition-colors" title="Print">
+<span class="material-icons text-lg">print</span>
+</a>
+</div>
+</div>
+<!-- Document Viewer -->
+<div class="paper-page bg-white dark:bg-slate-900 p-12 sm:p-20 document-shadow rounded-lg mb-10 overflow-hidden relative">
+<!-- Document Watermark (Optional decoration) -->
+<div class="absolute top-0 right-0 p-8 opacity-5">
+<span class="material-icons text-8xl transform rotate-12">gavel</span>
+</div>
+<!-- Legal Notice Content -->
+<div class="relative z-10 space-y-8">
+<!-- Header -->
+<div class="flex justify-between items-start">
+<div class="space-y-1">
+<p class="text-xs font-bold text-primary uppercase tracking-widest">Formal Notice</p>
+<h1 class="text-2xl font-bold text-slate-900 dark:text-white">NOTICE OF CONTRACTUAL BREACH</h1>
+</div>
+<div class="text-right">
+<p class="text-sm font-medium text-slate-500">Date: October 24, 2023</p>
+<p class="text-sm font-medium text-slate-500">Ref: AI-DRAFT-09822</p>
+</div>
+</div>
+<div class="h-[1px] bg-slate-200 dark:bg-slate-700 w-full"></div>
+<!-- Parties -->
+<div class="grid grid-cols-2 gap-8 text-sm leading-relaxed">
+<div class="space-y-2">
+<p class="font-bold text-slate-900 dark:text-white uppercase tracking-tight">From:</p>
+<p class="text-slate-600 dark:text-slate-400">
+                            Sterling & Associates LLC<br/>
+                            1200 Financial Plaza<br/>
+                            New York, NY 10014
+                        </p>
+</div>
+<div class="space-y-2 text-right">
+<p class="font-bold text-slate-900 dark:text-white uppercase tracking-tight">To:</p>
+<p class="text-slate-600 dark:text-slate-400">
+                            Meridian Systems Corp<br/>
+                            88 Industrial Way<br/>
+                            San Francisco, CA 94103
+                        </p>
+</div>
+</div>
+<!-- Subject -->
+<div class="bg-primary/5 dark:bg-primary/10 p-4 rounded-lg">
+<p class="text-sm font-semibold text-slate-900 dark:text-white">
+<span class="text-primary mr-2">SUBJECT:</span> Formal Notice of Default Regarding Service Level Agreement #442-B
+                    </p>
+</div>
+<!-- Body -->
+<div class="space-y-6 text-slate-700 dark:text-slate-300 leading-relaxed text-[15px] text-justify">
+<p>Dear Mr. Henderson,</p>
+<p>This letter serves as a formal notification that Meridian Systems Corp ("the Contractor") is currently in material breach of its obligations under the Service Agreement dated January 15, 2023, specifically pertaining to Section 4.2: Performance Metrics and Response Times.</p>
+<div class="space-y-4 ml-4">
+<div class="flex gap-4">
+<span class="font-bold text-slate-900 dark:text-white min-w-[30px]">1.0</span>
+<p><span class="font-semibold text-slate-900 dark:text-white underline">Nature of Breach:</span> Since September 1, 2023, the Contractor has failed to maintain the required 99.9% system uptime, resulting in documented outages totaling 14.5 hours across the third fiscal quarter.</p>
+</div>
+<div class="flex gap-4">
+<span class="font-bold text-slate-900 dark:text-white min-w-[30px]">2.0</span>
+<p><span class="font-semibold text-slate-900 dark:text-white underline">Cure Period:</span> Pursuant to Section 11.4 of the Agreement, the Contractor is hereby granted a period of thirty (30) business days from the receipt of this notice to rectify the aforementioned breach and provide a comprehensive service restoration plan.</p>
+</div>
+<div class="flex gap-4">
+<span class="font-bold text-slate-900 dark:text-white min-w-[30px]">3.0</span>
+<p><span class="font-semibold text-slate-900 dark:text-white underline">Reservation of Rights:</span> Failure to cure this breach within the specified timeframe may lead to the immediate termination of the Agreement and the pursuit of all legal remedies, including but not limited to, compensatory damages and injunctive relief.</p>
+</div>
+</div>
+<p>We request your urgent attention to this matter. Please acknowledge receipt of this notice within forty-eight (48) hours and specify your intended course of action.</p>
+</div>
+<!-- Signature Section -->
+<div class="pt-12 space-y-8">
+<p>Sincerely,</p>
+<div class="space-y-1">
+<div class="h-10 w-48 border-b border-slate-300 dark:border-slate-600 mb-2"></div>
+<p class="font-bold text-slate-900 dark:text-white">Marcus V. Thorne, Esq.</p>
+<p class="text-xs text-slate-500 uppercase tracking-widest font-medium">Principal Counsel | Sterling & Associates</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Zoom/Utilities (Optional) -->
+<div class="fixed bottom-24 right-8 flex flex-col gap-2 no-print">
+<a href="#zoom-in" class="w-12 h-12 bg-white dark:bg-slate-800 rounded-full shadow-lg flex items-center justify-center text-slate-600 dark:text-slate-400 hover:text-primary border border-primary/10">
+<span class="material-icons">zoom_in</span>
+</a>
+<a href="#help" class="w-12 h-12 bg-white dark:bg-slate-800 rounded-full shadow-lg flex items-center justify-center text-slate-600 dark:text-slate-400 hover:text-primary border border-primary/10">
+<span class="material-icons">help_outline</span>
+</a>
+</div>
+</main>
+<!-- Professional Footer Disclaimer -->
+<footer class="no-print bg-slate-100 dark:bg-slate-900/50 border-t border-primary/10 py-6 px-6">
+<div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+<div class="flex items-center gap-3 text-amber-600 dark:text-amber-500">
+<span class="material-icons text-lg">report_problem</span>
+<p class="text-xs sm:text-sm font-medium leading-relaxed">
+<span class="font-bold uppercase tracking-tight">Disclaimer:</span> This AI-generated document should be reviewed by a licensed legal professional before official use. The platform does not provide legal advice.
+                </p>
+</div>
+<div class="flex gap-6 text-[10px] uppercase font-bold text-slate-400 tracking-widest">
+<a class="hover:text-primary transition-colors" href="#terms">Terms of Service</a>
+<a class="hover:text-primary transition-colors" href="#privacy">Privacy Policy</a>
+</div>
+</div>
+</footer>
+</body>
+</html>

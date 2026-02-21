@@ -1,37 +1,49 @@
-from fastapi import FastAPI, HTTPException, Query
-from fastapi.responses import StreamingResponse
-from pydantic import BaseModel
+from fastapi import FastAPI, HTTPException, Query, Request , Form
+from fastapi.responses import RedirectResponse, StreamingResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 import openai
 import os
+import io
+import sqlite3
+import base64
+import requests
+from datetime import datetime
+from dotenv import load_dotenv
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.units import inch
 from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY
-import io
-from dotenv import load_dotenv
-import sqlite3
-from datetime import datetime
-import logging
-import traceback
-import requests
-import base64
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
-logging.basicConfig(level=logging.DEBUG)
 
-
+# ==============================
+# Load Environment
+# ==============================
 load_dotenv()
 
 app = FastAPI()
 
-app.mount("/static", StaticFiles(directory="../frontend"), name="static")
+# ==============================
+# Static & Templates Setup
+# ==============================
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-@app.get("/")
-async def serve_frontend():
-    return FileResponse("../frontend/index.html")
+app.mount(
+    "/static",
+    StaticFiles(directory=os.path.join(BASE_DIR, "static")),
+    name="static"
+)
 
+templates = Jinja2Templates(
+    directory=os.path.join(BASE_DIR, "templates")
+)
+
+# ==============================
+# CORS
+# ==============================
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -40,35 +52,42 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# ==============================
+# OpenRouter Client
+# ==============================
 client = openai.OpenAI(
     api_key=os.getenv("OPENROUTER_API_KEY"),
     base_url="https://openrouter.ai/api/v1"
 )
 
-# ✅ TEMPLATES
+# ==============================
+# Default Templates
+# ==============================
 TEMPLATES = {
-    "divorce-cruelty": "DIVORCE NOTICE - Cruelty & Desertion\n\nYou have deserted the matrimonial home without any reasonable cause. You have filed false 498A IPC case causing mental cruelty. Demand divorce under Hindu Marriage Act 1955 Section 13(1)(ia)(ib). Respond within 15 days or face court petition.",
-    
-    "rent-default": "RENT DEFAULT NOTICE\n\nYou failed to pay rent due since specified date. Vacate premises within 15 days per Rent Control Act. Pay arrears and damages or face eviction suit.",
-    
-    "498a-false": "FALSE 498A COMPLAINT NOTICE\n\nYour false 498A IPC complaint lacks evidence. Dowry demands proven false. Withdraw complaint within 7 days or face defamation suit under Section 182 IPC.",
-    
-    "cheque-bounce": "CHEQUE BOUNCE NOTICE\n\nCheque No. issued by you dated has bounced due to insufficient funds. Pay amount with interest within 15 days or face Section 138 NI Act proceedings.",
+    "divorce-cruelty": "DIVORCE NOTICE - Cruelty & Desertion...",
+    "rent-default": "RENT DEFAULT NOTICE...",
+    "498a-false": "FALSE 498A COMPLAINT NOTICE...",
+    "cheque-bounce": "CHEQUE BOUNCE NOTICE..."
 }
 
-# ✅ INIT DATABASE
+# ==============================
+# Database Init
+# ==============================
 def init_db():
-    conn = sqlite3.connect('notices.db')
+    conn = sqlite3.connect(os.path.join(BASE_DIR, "notices.db"))
     c = conn.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS notices 
-                 (id INTEGER PRIMARY KEY, party1_name TEXT, party2_name TEXT, 
-                  issue TEXT, draft_text TEXT, timestamp TEXT, template TEXT)''')
+                 (id INTEGER PRIMARY KEY, party1_name TEXT, 
+                  party2_name TEXT, issue TEXT, 
+                  draft_text TEXT, timestamp TEXT, template TEXT)''')
     conn.commit()
     conn.close()
 
 init_db()
 
-# ✅ MODELS
+# ==============================
+# MODELS
+# ==============================
 class NoticeRequest(BaseModel):
     party1_name: str
     party1_address: str
@@ -85,38 +104,109 @@ class PDFRequest(BaseModel):
     party2_address: str
     issue: str
 
-class EmailRequest(BaseModel):
-    draft_text: str
-    party1_name: str
-    party1_address: str
-    party2_name: str
-    party2_address: str
-    issue: str
+class EmailRequest(PDFRequest):
     recipient_email: str
 
-# ✅ FEATURE 1: GET TEMPLATES
+
+# ==============================
+# Frontend Routes (Stitch UI)
+# ==============================
+@app.get("/")
+async def index(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
+@app.get("/features", response_class=HTMLResponse)
+async def features(request: Request):
+    return templates.TemplateResponse("features.html", {"request": request})
+
+@app.get("/drafting", response_class=HTMLResponse)
+async def drafting(request: Request):
+    return templates.TemplateResponse("drafting.html", {"request": request})
+
+@app.get("/pricing", response_class=HTMLResponse)
+async def pricing(request:Request):
+    return templates.TemplateResponse("pricing.html", {"request": request})
+
+@app.get("/about",response_class=HTMLResponse)
+async def about(request:Request):
+    return templates.TemplateResponse("about.html", {"request": request})
+
+@app.get("/preview", response_class=HTMLResponse)
+async def preview(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
+
+@app.get("/landing", response_class=HTMLResponse)
+async def landing(request: Request):
+    return templates.TemplateResponse("landing.html", {"request": request})
+
+@app.get("/create", response_class=HTMLResponse)
+async def create(request: Request):
+    return templates.TemplateResponse("create.html", {"request": request})
+
+@app.get("/code5", response_class=HTMLResponse)
+async def code5(request: Request):
+    return templates.TemplateResponse("code5.html", {"request": request})
+
+@app.get("/login", response_class=HTMLResponse)
+async def login(request: Request):
+    return templates.TemplateResponse("login.html", {"request": request})
+
+@app.post("/login")
+async def login(email: str = Form(...), password: str = Form(...)):
+    # For now simple demo login
+    return RedirectResponse(url="/landing", status_code=303)
+
+@app.get("/signup", response_class=HTMLResponse)
+async def signup(request: Request):
+    return templates.TemplateResponse("signup.html", {"request": request})
+
+@app.post("/signup")
+async def signup(name: str = Form(...), email: str = Form(...), password: str = Form(...)):
+    # Later we connect database
+    return RedirectResponse(url="/login", status_code=303)
+
+@app.get("/dashboard", response_class=HTMLResponse)
+async def dashboard(request: Request):
+    return templates.TemplateResponse("dashboard.html", {"request": request})
+
+@app.get("/templates-page", response_class=HTMLResponse)
+async def templates_page(request: Request):
+    return templates.TemplateResponse("templates.html", {"request": request})
+
+@app.get("/pricing", response_class=HTMLResponse)
+async def pricing(request: Request):
+    return templates.TemplateResponse("pricing.html", {"request": request})
+
+@app.get("/create")
+async def create(request: Request):
+    return templates.TemplateResponse("create.html", {"request": request})
+
+@app.get("/drafts", response_class=HTMLResponse)
+async def drafts(request: Request):
+    return templates.TemplateResponse("drafts.html", {"request": request})
+
+
+# ==============================
+# API Routes
+# ==============================
 @app.get("/templates")
 async def get_templates():
     return {"templates": list(TEMPLATES.keys())}
 
-# ✅ FEATURE 2: GET SINGLE TEMPLATE
-@app.get("/template/{template_name}")
-async def get_template(template_name: str):
-    if template_name not in TEMPLATES:
-        raise HTTPException(status_code=404, detail="Template not found")
-    return {"template": TEMPLATES[template_name]}
 
-# ✅ MAIN: GENERATE LEGAL NOTICE
 @app.post("/generate-legal-notice")
 async def generate_legal_notice(request: NoticeRequest):
     try:
-        # If template selected, use it
         if request.template and request.template in TEMPLATES:
             template_text = TEMPLATES[request.template]
-            draft_text = f"{template_text}\n\nParty 1: {request.party1_name}\nParty 2: {request.party2_name}\nIssue: {request.issue}"
+            draft_text = f"""{template_text}
+
+Claimant: {request.party1_name}
+Respondent: {request.party2_name}
+Issue: {request.issue}"""
             return {"draft_text": draft_text}
-        
-        # Otherwise use AI
+
         prompt = f"""Legal notice (Indian format):
 
 Claimant: {request.party1_name}
@@ -127,170 +217,95 @@ Address: {request.party2_address}
 
 Issue: {request.issue}
 
-Draft formal notice with 15-day demand."""
+Draft formal notice with 15-day demand.
+"""
 
         response = client.chat.completions.create(
             model="anthropic/claude-3-haiku",
             messages=[{"role": "user", "content": prompt}],
             max_tokens=600
         )
-        
+
         return {"draft_text": response.choices[0].message.content}
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-# ✅ PDF DOWNLOAD
+
 @app.post("/download-pdf")
 async def download_pdf(request: PDFRequest):
     try:
         pdf_buffer = io.BytesIO()
-        doc = SimpleDocTemplate(pdf_buffer, pagesize=letter, topMargin=0.5*inch)
+        doc = SimpleDocTemplate(pdf_buffer, pagesize=letter)
+
         styles = getSampleStyleSheet()
-        
-        title_style = ParagraphStyle('CustomTitle', parent=styles['Heading1'], 
-                                   fontSize=14, alignment=TA_CENTER, spaceAfter=12)
-        body_style = ParagraphStyle('CustomBody', parent=styles['BodyText'], 
-                                  fontSize=10, alignment=TA_JUSTIFY, spaceAfter=10)
-        
+        title_style = ParagraphStyle(
+            'TitleStyle',
+            parent=styles['Heading1'],
+            alignment=TA_CENTER
+        )
+
         story = []
         story.append(Paragraph("LEGAL NOTICE", title_style))
-        story.append(Spacer(1, 0.3*inch))
-        
-        story.append(Paragraph(f"<b>Claimant:</b> {request.party1_name}", body_style))
-        story.append(Paragraph(f"<b>Address:</b> {request.party1_address}", body_style))
-        story.append(Spacer(1, 0.15*inch))
-        
-        story.append(Paragraph(f"<b>Respondent:</b> {request.party2_name}", body_style))
-        story.append(Paragraph(f"<b>Address:</b> {request.party2_address}", body_style))
-        story.append(Spacer(1, 0.2*inch))
-        
-        story.append(Paragraph("<b>Notice Details:</b>", body_style))
-        for para in request.draft_text.split('\n\n'):
-            if para.strip():
-                story.append(Paragraph(para.strip().replace('\n', '<br/>'), body_style))
-                story.append(Spacer(1, 0.1*inch))
-        
-        doc.build(story)
-        pdf_buffer.seek(0)
-        
-        return StreamingResponse(
-            pdf_buffer,
-            media_type="application/pdf",
-            headers={"Content-Disposition": "attachment; filename=Legal_Notice.pdf"}
-        )
-        
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"PDF failed: {str(e)}")
-
-# ✅ FEATURE 3: SAVE NOTICE
-@app.post("/save-notice")
-async def save_notice(request: NoticeRequest):
-    try:
-        conn = sqlite3.connect('notices.db')
-        c = conn.cursor()
-        c.execute(
-            "INSERT INTO notices (party1_name, party2_name, issue, draft_text, timestamp, template) VALUES (?, ?, ?, ?, ?, ?)",
-            (request.party1_name, request.party2_name, request.issue, "", datetime.now().isoformat(), request.template)
-        )
-        notice_id = c.lastrowid
-        conn.commit()
-        conn.close()
-        return {"id": notice_id, "status": "saved"}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-# ✅ FEATURE 4: GET HISTORY
-@app.get("/history")
-async def get_history(limit: int = Query(10)):
-    try:
-        conn = sqlite3.connect('notices.db')
-        c = conn.cursor()
-        c.execute("SELECT id, party1_name, party2_name, issue, timestamp FROM notices ORDER BY timestamp DESC LIMIT ?", (limit,))
-        history = [
-            {"id": row[0], "party1": row[1], "party2": row[2], "issue": row[3], "date": row[4]} 
-            for row in c.fetchall()
-        ]
-        conn.close()
-        return {"history": history}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-def send_email_with_pdf(recipient_email, pdf_bytes, subject):
-    api_key = os.getenv("RESEND_API_KEY")
-
-    if not api_key:
-        raise Exception("RESEND_API_KEY not set")
-
-    encoded_pdf = base64.b64encode(pdf_bytes).decode()
-
-    response = requests.post(
-        "https://api.resend.com/emails",
-        headers={
-            "Authorization": f"Bearer {api_key}",
-            "Content-Type": "application/json"
-        },
-        json={
-            "from": "onboarding@resend.dev",
-            "to": recipient_email,
-            "subject": subject,
-            "html": "<p>Please find your legal notice attached.</p>",
-            "attachments": [
-                {
-                    "filename": "Legal_Notice.pdf",
-                    "content": encoded_pdf
-                }
-            ]
-        }
-    )
-
-    return response.status_code
-
-# ✅ FEATURE 5: EMAIL PDF
-@app.post("/email-pdf")
-async def email_pdf(request: EmailRequest):
-    try:
-        # Generate PDF
-        pdf_buffer = io.BytesIO()
-        doc = SimpleDocTemplate(pdf_buffer, pagesize=letter)
-        styles = getSampleStyleSheet()
-        story = []
-
-        story.append(Paragraph("LEGAL NOTICE", styles['Title']))
-        story.append(Spacer(1, 12))
-        story.append(Paragraph(f"Claimant: {request.party1_name}", styles['Normal']))
-        story.append(Paragraph(f"Address: {request.party1_address}", styles['Normal']))
-        story.append(Spacer(1, 12))
-        story.append(Paragraph(f"Respondent: {request.party2_name}", styles['Normal']))
-        story.append(Paragraph(f"Address: {request.party2_address}", styles['Normal']))
         story.append(Spacer(1, 12))
         story.append(Paragraph(request.draft_text, styles['Normal']))
 
         doc.build(story)
         pdf_buffer.seek(0)
-        pdf_data = pdf_buffer.getvalue()
 
-        # Send email using Resend
-        subject = f"Legal Notice - {request.party1_name} vs {request.party2_name}"
-
-        status = send_email_with_pdf(
-            request.recipient_email,
-            pdf_data,
-            subject
+        return StreamingResponse(
+            pdf_buffer,
+            media_type="application/pdf",
+            headers={"Content-Disposition": "attachment; filename=Legal_Notice.pdf"}
         )
 
-        if status not in [200, 201]:
-            raise HTTPException(status_code=500, detail="Email sending failed")
-
-        return {"status": "Email sent successfully", "recipient": request.recipient_email}
-
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Email failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/save-notice")
+async def save_notice(request: NoticeRequest):
+    try:
+        conn = sqlite3.connect(os.path.join(BASE_DIR, "notices.db"))
+        c = conn.cursor()
+        c.execute(
+            "INSERT INTO notices (party1_name, party2_name, issue, draft_text, timestamp, template) VALUES (?, ?, ?, ?, ?, ?)",
+            (request.party1_name, request.party2_name, request.issue, "", datetime.now().isoformat(), request.template)
+        )
+        conn.commit()
+        conn.close()
+        return {"status": "saved"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/history")
+async def get_history(limit: int = Query(10)):
+    conn = sqlite3.connect(os.path.join(BASE_DIR, "notices.db"))
+    c = conn.cursor()
+    c.execute(
+        "SELECT id, party1_name, party2_name, issue, timestamp FROM notices ORDER BY timestamp DESC LIMIT ?",
+        (limit,)
+    )
+    rows = c.fetchall()
+    conn.close()
+
+    history = [
+        {"id": r[0], "party1": r[1], "party2": r[2], "issue": r[3], "date": r[4]}
+        for r in rows
+    ]
+
+    return {"history": history}
+
 
 @app.api_route("/health", methods=["GET", "HEAD"])
 async def health():
     return {"status": "ok"}
 
+
+# ==============================
+# Local Run
+# ==============================
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)

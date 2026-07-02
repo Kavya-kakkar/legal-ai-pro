@@ -1,117 +1,204 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="light" lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Legal Templates</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Legal Templates - Legal AI Assistant</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1142d4",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101522",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
 </head>
+<body class="font-display bg-background-light dark:bg-background-dark text-slate-800 dark:text-slate-200 min-h-screen flex">
+<!-- Sidebar Navigation -->
+<aside class="w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark flex flex-col sticky top-0 h-screen hidden lg:flex">
+<div class="p-6 flex items-center gap-3">
+<div class="bg-primary p-2 rounded-lg">
+<span class="material-icons text-white">gavel</span>
+</div>
+<a href="/" class="font-bold text-xl tracking-tight text-primary">LegalAI</a>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="/dashboard">
+    <span class="material-icons text-[20px]">dashboard</span>
+    <span class="font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="/create">
+<span class="material-icons text-[20px]">description</span>
+<span class="font-medium">Create Draft</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-primary/10 text-primary rounded-lg transition-colors" href="/templates">
+<span class="material-icons text-[20px]">article</span>
+<span class="font-medium">Templates</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="/case-studies">
+<span class="material-icons text-[20px]">assignment</span>
+<span class="font-medium">Case Files</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="/about">
+<span class="material-icons text-[20px]">settings</span>
+<span class="font-medium">About</span>
+</a>
+</nav>
+<div class="p-4 border-t border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-3 px-2 py-3">
+<div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+<span class="material-icons">account_circle</span>
+</div>
+<div class="overflow-hidden">
+<p class="text-sm font-semibold truncate">{{ user_name }}</p>
+<p class="text-xs text-slate-500 truncate"><a href="/logout" class="text-red-500 hover:underline">Logout</a></p>
+</div>
+</div>
+</div>
+</aside>
 
-<body class="bg-slate-50 min-h-screen">
+<!-- Main Content -->
+<main class="flex-1 flex flex-col h-screen overflow-y-auto">
+<!-- Header -->
+<header class="bg-white dark:bg-background-dark border-b border-slate-200 dark:border-slate-800 px-8 py-6 sticky top-0 z-10">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div>
+<nav class="flex text-xs font-medium text-slate-500 mb-2 items-center gap-2">
+<a class="hover:text-primary" href="/dashboard">Dashboard</a>
+<span class="material-icons text-[12px]">chevron_right</span>
+<span class="text-primary">Templates</span>
+</nav>
+<h1 class="text-2xl font-bold text-slate-900 dark:text-white">Choose a Legal Template</h1>
+</div>
+<div class="flex items-center gap-3">
+<a href="/create" class="bg-primary text-white px-6 py-2 rounded-lg font-medium hover:bg-opacity-90 transition-all flex items-center gap-2 shadow-sm">
+<span class="material-icons text-[18px]">add_circle</span>
+                    Create Custom Draft
+                </a>
+</div>
+</div>
+</header>
 
-    <!-- Navbar -->
-    <nav class="bg-white shadow-md px-6 py-4 flex justify-between items-center">
-        <h1 class="text-xl font-bold text-primary">Legal AI Assistant</h1>
-        <div class="flex gap-6 text-slate-600 font-medium">
-            <a href="/landing" class="hover:text-primary">Home</a>
-            <a href="/drafts" class="hover:text-primary">Drafts</a>
-            <a href="/create" class="hover:text-primary">Create</a>
-        </div>
-    </nav>
+<!-- Templates Grid -->
+<div class="p-8 max-w-7xl mx-auto w-full">
+    <p class="text-slate-600 dark:text-slate-400 text-lg mb-8 max-w-3xl">
+        Select from professionally structured legal formats. Our AI will automatically align the generation process with the corresponding legal rules, citations, and guidelines.
+    </p>
 
-    <!-- Header Section -->
-    <section class="text-center py-12 px-6">
-        <h2 class="text-4xl font-bold text-slate-800 mb-4">
-            Choose a Legal Template
-        </h2>
-        <p class="text-slate-600 text-lg max-w-2xl mx-auto">
-            Select from professionally designed legal document templates and generate customized documents instantly.
-        </p>
-    </section>
-
-    <!-- Templates Grid -->
-    <section class="max-w-6xl mx-auto px-6 pb-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-
-        <!-- Card 1 -->
-        <div class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all">
-            <span class="material-icons text-4xl text-primary mb-4">gavel</span>
-            <h3 class="text-xl font-bold mb-2">Legal Notice</h3>
-            <p class="text-slate-600 mb-4">
-                Create a professional legal notice for disputes, payments, or complaints.
-            </p>
-            <a href="/create" 
-               class="block text-center bg-primary text-white py-2 rounded-lg font-semibold hover:opacity-90">
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 pb-12">
+        <!-- Card 1: Divorce Notice -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 hover:shadow-lg hover:border-primary/40 transition-all flex flex-col justify-between">
+            <div>
+                <span class="material-icons text-4xl text-primary mb-4">family_restroom</span>
+                <h3 class="text-xl font-bold mb-2 text-slate-800 dark:text-white">Divorce Notice</h3>
+                <p class="text-slate-600 dark:text-slate-400 text-sm mb-6 leading-relaxed">
+                    Formal legal notice for marital disputes citing cruelty, desertion, or mutual request under Hindu Marriage Act / relevant family laws.
+                </p>
+            </div>
+            <a href="/create?template=divorce-cruelty" 
+               class="block text-center bg-primary text-white py-2.5 rounded-xl font-semibold hover:bg-primary/95 transition-all shadow-md shadow-primary/10">
                 Use Template
             </a>
         </div>
 
-        <!-- Card 2 -->
-        <div class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all">
-            <span class="material-icons text-4xl text-primary mb-4">description</span>
-            <h3 class="text-xl font-bold mb-2">Rental Agreement</h3>
-            <p class="text-slate-600 mb-4">
-                Generate rental or lease agreement documents instantly.
-            </p>
-            <a href="/create" 
-               class="block text-center bg-primary text-white py-2 rounded-lg font-semibold hover:opacity-90">
+        <!-- Card 2: Rent Default -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 hover:shadow-lg hover:border-primary/40 transition-all flex flex-col justify-between">
+            <div>
+                <span class="material-icons text-4xl text-primary mb-4">description</span>
+                <h3 class="text-xl font-bold mb-2 text-slate-800 dark:text-white">Rent Default Notice</h3>
+                <p class="text-slate-600 dark:text-slate-400 text-sm mb-6 leading-relaxed">
+                    Served by a landlord to a tenant for non-payment of rent, detailing default duration, cure period, and lease termination terms.
+                </p>
+            </div>
+            <a href="/create?template=rent-default" 
+               class="block text-center bg-primary text-white py-2.5 rounded-xl font-semibold hover:bg-primary/95 transition-all shadow-md shadow-primary/10">
                 Use Template
             </a>
         </div>
 
-        <!-- Card 3 -->
-        <div class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all">
-            <span class="material-icons text-4xl text-primary mb-4">lock</span>
-            <h3 class="text-xl font-bold mb-2">Non-Disclosure Agreement</h3>
-            <p class="text-slate-600 mb-4">
-                Protect confidential information with a secure NDA document.
-            </p>
-            <a href="/create" 
-               class="block text-center bg-primary text-white py-2 rounded-lg font-semibold hover:opacity-90">
+        <!-- Card 3: False 498A Notice -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 hover:shadow-lg hover:border-primary/40 transition-all flex flex-col justify-between">
+            <div>
+                <span class="material-icons text-4xl text-primary mb-4">gavel</span>
+                <h3 class="text-xl font-bold mb-2 text-slate-800 dark:text-white">False 498A Notice</h3>
+                <p class="text-slate-600 dark:text-slate-400 text-sm mb-6 leading-relaxed">
+                    Legal response notice addressing false allegations under Section 498A, defending client rights, and stating facts.
+                </p>
+            </div>
+            <a href="/create?template=498a-false" 
+               class="block text-center bg-primary text-white py-2.5 rounded-xl font-semibold hover:bg-primary/95 transition-all shadow-md shadow-primary/10">
                 Use Template
             </a>
         </div>
 
-        <!-- Card 4 -->
-        <div class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all">
-            <span class="material-icons text-4xl text-primary mb-4">report_problem</span>
-            <h3 class="text-xl font-bold mb-2">Consumer Complaint</h3>
-            <p class="text-slate-600 mb-4">
-                Draft complaint letters for consumer disputes or service issues.
-            </p>
-            <a href="/create" 
-               class="block text-center bg-primary text-white py-2 rounded-lg font-semibold hover:opacity-90">
+        <!-- Card 4: Cheque Bounce Notice -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 hover:shadow-lg hover:border-primary/40 transition-all flex flex-col justify-between">
+            <div>
+                <span class="material-icons text-4xl text-primary mb-4">payments</span>
+                <h3 class="text-xl font-bold mb-2 text-slate-800 dark:text-white">Cheque Bounce Notice</h3>
+                <p class="text-slate-600 dark:text-slate-400 text-sm mb-6 leading-relaxed">
+                    Statutory demand notice under Section 138 of the Negotiable Instruments Act for returned cheques, specifying 15 days cure period.
+                </p>
+            </div>
+            <a href="/create?template=cheque-bounce" 
+               class="block text-center bg-primary text-white py-2.5 rounded-xl font-semibold hover:bg-primary/95 transition-all shadow-md shadow-primary/10">
                 Use Template
             </a>
         </div>
 
-        <!-- Card 5 -->
-        <div class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all">
-            <span class="material-icons text-4xl text-primary mb-4">business</span>
-            <h3 class="text-xl font-bold mb-2">Employment Contract</h3>
-            <p class="text-slate-600 mb-4">
-                Create employment agreements for companies and employees.
-            </p>
+        <!-- Card 5: Non-Disclosure Agreement -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 hover:shadow-lg hover:border-primary/40 transition-all flex flex-col justify-between opacity-75">
+            <div>
+                <span class="material-icons text-4xl text-slate-400 dark:text-slate-500 mb-4">lock</span>
+                <div class="flex items-center gap-2 mb-2">
+                    <h3 class="text-xl font-bold text-slate-800 dark:text-white">NDA</h3>
+                    <span class="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-500 text-[9px] uppercase font-bold tracking-wider rounded">Soon</span>
+                </div>
+                <p class="text-slate-600 dark:text-slate-400 text-sm mb-6 leading-relaxed">
+                    Protect confidential proprietary information and trade secrets with a comprehensive non-disclosure agreement.
+                </p>
+            </div>
             <a href="/create" 
-               class="block text-center bg-primary text-white py-2 rounded-lg font-semibold hover:opacity-90">
-                Use Template
+               class="block text-center bg-slate-200 dark:bg-slate-800 text-slate-500 py-2.5 rounded-xl font-semibold hover:opacity-90 cursor-not-allowed">
+                Use Custom notice instead
             </a>
         </div>
 
-        <!-- Card 6 -->
-        <div class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all">
-            <span class="material-icons text-4xl text-primary mb-4">account_balance</span>
-            <h3 class="text-xl font-bold mb-2">Affidavit</h3>
-            <p class="text-slate-600 mb-4">
-                Prepare legally valid affidavit documents quickly and easily.
-            </p>
+        <!-- Card 6: General Notice -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 hover:shadow-lg hover:border-primary/40 transition-all flex flex-col justify-between">
+            <div>
+                <span class="material-icons text-4xl text-primary mb-4">description</span>
+                <h3 class="text-xl font-bold mb-2 text-slate-800 dark:text-white">Custom / General Notice</h3>
+                <p class="text-slate-600 dark:text-slate-400 text-sm mb-6 leading-relaxed">
+                    Flexible template for breach of contract, service failures, or specific legal demands not covered by other presets.
+                </p>
+            </div>
             <a href="/create" 
-               class="block text-center bg-primary text-white py-2 rounded-lg font-semibold hover:opacity-90">
+               class="block text-center bg-primary text-white py-2.5 rounded-xl font-semibold hover:bg-primary/95 transition-all shadow-md shadow-primary/10">
                 Use Template
             </a>
         </div>
-
-    </section>
-
+    </div>
+</div>
+</main>
 </body>
 </html>

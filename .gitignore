@@ -1,3 +1,13 @@
 .env
-__pycache__
+__pycache__/
+*.pyc
 venv/
+backend/venv/
+
+# Editor & Agent configurations
+.claude/
+.repowise/
+.mcp.json
+
+# repowise API keys (local)
+.repowise/.env

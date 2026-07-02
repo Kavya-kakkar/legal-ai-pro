@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="UTF-8">
+<title>API Documentation - Legal AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+</head>
+<body class="bg-slate-50 text-slate-900 font-sans min-h-screen flex flex-col">
+
+<!-- Navbar -->
+<nav class="bg-white shadow px-6 py-4 flex justify-between items-center">
+    <div class="flex items-center gap-2">
+        <div class="w-8 h-8 bg-blue-600 rounded flex items-center justify-center">
+            <span class="material-icons text-white text-sm">gavel</span>
+        </div>
+        <a href="/" class="font-bold text-xl text-blue-600">Legal AI</a>
+    </div>
+    <div class="flex gap-6 text-slate-600 font-medium text-sm">
+        <a href="/" class="hover:text-blue-600 transition-colors">Home</a>
+        <a href="/dashboard" class="hover:text-blue-600 transition-colors">Dashboard</a>
+        <a href="/create" class="hover:text-blue-600 transition-colors">Create Notice</a>
+        <a href="/templates" class="hover:text-blue-600 transition-colors">Templates</a>
+    </div>
+</nav>
+
+<!-- Content -->
+<main class="flex-grow max-w-4xl mx-auto py-16 px-6 w-full">
+    <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold mb-4 text-slate-800">API Documentation</h1>
+        <p class="text-slate-600 max-w-xl mx-auto">Integrate Legal AI's drafting and verification engines directly into your practice management software or corporate CRM.</p>
+    </div>
+
+    <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 space-y-6">
+        <h2 class="text-2xl font-bold text-slate-800 border-b pb-3 mb-6">Available Endpoints</h2>
+        
+        <div class="space-y-4">
+            <div class="p-4 bg-slate-50 rounded-xl border border-slate-100">
+                <p class="text-sm font-mono font-bold text-blue-600">POST /login</p>
+                <p class="text-slate-600 text-sm mt-1">Authenticate user and start session.</p>
+            </div>
+            
+            <div class="p-4 bg-slate-50 rounded-xl border border-slate-100">
+                <p class="text-sm font-mono font-bold text-blue-600">POST /signup</p>
+                <p class="text-slate-600 text-sm mt-1">Register a new user account.</p>
+            </div>
+            
+            <div class="p-4 bg-slate-50 rounded-xl border border-slate-100">
+                <p class="text-sm font-mono font-bold text-emerald-600">POST /generate-legal-notice</p>
+                <p class="text-slate-600 text-sm mt-1">Send party details and dispute description to generate a structured Indian legal notice using AI.</p>
+            </div>
+
+            <div class="p-4 bg-slate-50 rounded-xl border border-slate-100">
+                <p class="text-sm font-mono font-bold text-emerald-600">POST /download-pdf</p>
+                <p class="text-slate-600 text-sm mt-1">Generate a professional PDF from draft text and download it immediately.</p>
+            </div>
+
+            <div class="p-4 bg-slate-50 rounded-xl border border-slate-100">
+                <p class="text-sm font-mono font-bold text-slate-600">GET /history</p>
+                <p class="text-slate-600 text-sm mt-1">Retrieve the history of drafted notices.</p>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-400">
+    <p>© 2026 Legal AI Drafting Systems Inc. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

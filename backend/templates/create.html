@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Legal AI Dashboard Overview</title>
+<title>Create Legal Draft - Legal AI Assistant</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
@@ -21,269 +21,302 @@
                     fontFamily: {
                         "display": ["Inter"]
                     },
-                    borderRadius: {
-                        "DEFAULT": "0.25rem",
-                        "lg": "0.5rem",
-                        "xl": "0.75rem",
-                        "full": "9999px"
-                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
                 },
             },
         }
     </script>
 </head>
-<body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased h-screen flex overflow-hidden">
+<body class="font-display bg-background-light dark:bg-background-dark text-slate-800 dark:text-slate-200 min-h-screen flex">
 <!-- Sidebar Navigation -->
-<aside class="w-64 bg-slate-950 dark:bg-slate-950 flex flex-col h-full border-r border-slate-800 shrink-0">
+<aside class="w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark flex flex-col sticky top-0 h-screen hidden lg:flex">
 <div class="p-6 flex items-center gap-3">
-<div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+<div class="bg-primary p-2 rounded-lg">
 <span class="material-icons text-white">gavel</span>
 </div>
-<span class="font-bold text-xl text-white tracking-tight">Lexis AI</span>
+<a href="/" class="font-bold text-xl tracking-tight text-primary">LegalAI</a>
 </div>
-<nav class="flex-1 px-4 space-y-1 mt-4">
-<a class="flex items-center gap-3 px-3 py-2.5 bg-primary text-white rounded-lg transition-all" href="#dashboard">
-<span class="material-icons text-sm">dashboard</span>
-<span class="text-sm font-medium">Dashboard</span>
+<nav class="flex-1 px-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="/dashboard">
+    <span class="material-icons text-[20px]">dashboard</span>
+    <span class="font-medium">Dashboard</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-2.5 text-slate-400 hover:text-white hover:bg-white/5 rounded-lg transition-all" href="#create">
-<span class="material-icons text-sm">edit_note</span>
-<span class="text-sm font-medium">Create Draft</span>
+<a class="flex items-center gap-3 px-4 py-3 bg-primary/10 text-primary rounded-lg transition-colors" href="/create">
+<span class="material-icons text-[20px]">description</span>
+<span class="font-medium">Create Draft</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-2.5 text-slate-400 hover:text-white hover:bg-white/5 rounded-lg transition-all" href="#drafts">
-<span class="material-icons text-sm">folder_open</span>
-<span class="text-sm font-medium">Saved Drafts</span>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="/templates">
+<span class="material-icons text-[20px]">article</span>
+<span class="font-medium">Templates</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-2.5 text-slate-400 hover:text-white hover:bg-white/5 rounded-lg transition-all" href="#history">
-<span class="material-icons text-sm">history</span>
-<span class="text-sm font-medium">Case History</span>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="/case-studies">
+<span class="material-icons text-[20px]">assignment</span>
+<span class="font-medium">Case Files</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-2.5 text-slate-400 hover:text-white hover:bg-white/5 rounded-lg transition-all" href="#categories">
-<span class="material-icons text-sm">category</span>
-<span class="text-sm font-medium">Legal Categories</span>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="/about">
+<span class="material-icons text-[20px]">settings</span>
+<span class="font-medium">About</span>
 </a>
 </nav>
-<div class="p-4 mt-auto">
-<div class="p-4 bg-slate-900 rounded-xl border border-slate-800">
-<p class="text-xs text-slate-500 font-medium mb-2 uppercase">Subscription Plan</p>
-<p class="text-sm text-white font-semibold mb-3">Enterprise Pro</p>
-<div class="w-full bg-slate-800 h-1.5 rounded-full mb-3 overflow-hidden">
-<div class="bg-primary h-full w-3/4"></div>
+<div class="p-4 border-t border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-3 px-2 py-3">
+<div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+<span class="material-icons">account_circle</span>
 </div>
-<a href="#billing" class="w-full py-2 bg-slate-800 text-xs font-semibold text-white rounded-lg hover:bg-slate-700 transition-colors">Manage Billing</a>
+<div class="overflow-hidden">
+<p class="text-sm font-semibold truncate">{{ user_name }}</p>
+<p class="text-xs text-slate-500 truncate"><a href="/logout" class="text-red-500 hover:underline">Logout</a></p>
 </div>
-<a class="flex items-center gap-3 px-3 py-2.5 mt-4 text-slate-400 hover:text-white transition-all" href="#settings">
-<span class="material-icons text-sm">settings</span>
-<span class="text-sm font-medium">Settings</span>
-</a>
+</div>
 </div>
 </aside>
 <!-- Main Content -->
-<main class="flex-1 flex flex-col min-w-0 overflow-hidden">
-<!-- Top Navbar -->
-<header class="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-8 shrink-0">
-<div class="max-w-md w-full relative">
-<span class="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
-<input class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-lg pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary/50 placeholder:text-slate-500" placeholder="Search cases, drafts, or statutes..." type="text"/>
+<main class="flex-1 flex flex-col h-screen overflow-y-auto">
+<!-- Header -->
+<header class="bg-white dark:bg-background-dark border-b border-slate-200 dark:border-slate-800 px-8 py-6 sticky top-0 z-10">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div>
+<nav class="flex text-xs font-medium text-slate-500 mb-2 items-center gap-2">
+<a class="hover:text-primary" href="/dashboard">Dashboard</a>
+<span class="material-icons text-[12px]">chevron_right</span>
+<span class="text-primary">Create New Draft</span>
+</nav>
+<h1 class="text-2xl font-bold text-slate-900 dark:text-white">Create New Legal Draft</h1>
 </div>
-<div class="flex items-center gap-6">
-<a href="#notifications" class="relative text-slate-500 hover:text-primary transition-colors">
-<span class="material-icons">notifications</span>
-<span class="absolute top-0 right-0 w-2 h-2 bg-red-500 border-2 border-white dark:border-slate-900 rounded-full"></span>
-</a>
-<div class="h-8 w-px bg-slate-200 dark:bg-slate-800"></div>
 <div class="flex items-center gap-3">
-<div class="text-right">
-<p class="text-sm font-semibold leading-tight">Julian Thorne, Esq.</p>
-<p class="text-xs text-slate-500">Senior Partner</p>
-</div>
-<img class="w-10 h-10 rounded-full border-2 border-slate-100 dark:border-slate-800 object-cover" data-alt="Professional headshot of a male lawyer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIAJL2goJ0VAJow_Q9bY7brcb49kaXN5cfHLv9e7962ALGiV1YncuaaKGx0ydg91gu9l3eVDVFo7Y4A2RtyY3A4LdGb157044fBXFbn1eny89K0YKIW2LmwiqAG1QCtNVnS0dx07vf4NBtDU_K8NLhIyiO3-sBgbud-gieqHELl0mTqKHBDvnMqQfMfpmrOwKLkE_R23ci4P_d5eb_H4PGbfXin5R493ZTIV9e0fcdIIPkYVtcUcqSh2OGsRS2C0ssio4LzJ7cXuz7"/>
+<a href="/templates" class="px-4 py-2 text-sm font-medium border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                    View Templates
+                </a>
+<a href="#generate" id="generateHeaderBtn" class="bg-primary text-white px-6 py-2 rounded-lg font-medium hover:bg-opacity-90 transition-all flex items-center gap-2 shadow-sm">
+<span class="material-icons text-[18px]">auto_awesome</span>
+                    Generate Draft
+                </a>
 </div>
 </div>
 </header>
-<!-- Content Area -->
-<section class="flex-1 overflow-y-auto p-8">
-<!-- Greeting -->
-<div class="mb-8">
-<h1 class="text-2xl font-bold text-slate-900 dark:text-white">Welcome back, Counselor</h1>
-<p class="text-slate-500 text-sm mt-1">Here's an overview of your active drafts and recent activity for today.</p>
+<!-- Form Area -->
+<div class="p-8 max-w-5xl mx-auto w-full space-y-8">
+<!-- Section 1: Party 1 Details -->
+<section class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 flex items-center gap-2">
+<span class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-sm">1</span>
+<h2 class="text-lg font-semibold text-slate-800 dark:text-white">Party 1 Details (Petitioner/Plaintiff - Sender)</h2>
 </div>
-<!-- Stats Widgets -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-<div class="flex items-center justify-between mb-4">
-<span class="p-2 bg-blue-50 dark:bg-blue-900/30 text-primary rounded-lg">
-<span class="material-icons text-lg">description</span>
-</span>
-<span class="text-xs font-medium text-emerald-600 bg-emerald-50 dark:bg-emerald-900/30 px-2 py-1 rounded">+12%</span>
+<div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Full Name *</label>
+<input id="party1_name" name="party1_name" class="w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary" placeholder="Enter legal name" type="text" required/>
 </div>
-<p class="text-2xl font-bold">142</p>
-<p class="text-sm text-slate-500 font-medium">Total Drafts</p>
+<div class="space-y-2">
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Email Address</label>
+<input id="party1_email" name="party1_email" class="w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary" placeholder="email@example.com" type="email"/>
 </div>
-<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-<div class="flex items-center justify-between mb-4">
-<span class="p-2 bg-amber-50 dark:bg-amber-900/30 text-amber-600 rounded-lg">
-<span class="material-icons text-lg">schedule</span>
-</span>
-<span class="text-xs font-medium text-slate-500">Active</span>
+<div class="space-y-2">
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Contact Number</label>
+<input id="party1_phone" name="party1_phone" class="w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary" placeholder="+91-XXXXXXXXXX" type="tel"/>
 </div>
-<p class="text-2xl font-bold">8</p>
-<p class="text-sm text-slate-500 font-medium">In Review</p>
-</div>
-<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-<div class="flex items-center justify-between mb-4">
-<span class="p-2 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 rounded-lg">
-<span class="material-icons text-lg">auto_fix_high</span>
-</span>
-<span class="text-xs font-medium text-emerald-600 bg-emerald-50 dark:bg-emerald-900/30 px-2 py-1 rounded">24.5h</span>
-</div>
-<p class="text-2xl font-bold">38 hrs</p>
-<p class="text-sm text-slate-500 font-medium">AI Hours Saved</p>
-</div>
-<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-<div class="flex items-center justify-between mb-4">
-<span class="p-2 bg-purple-50 dark:bg-purple-900/30 text-purple-600 rounded-lg">
-<span class="material-icons text-lg">gavel</span>
-</span>
-<span class="text-xs font-medium text-slate-500">Total</span>
-</div>
-<p class="text-2xl font-bold">24</p>
-<p class="text-sm text-slate-500 font-medium">Active Cases</p>
+<div class="space-y-2">
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Physical Address *</label>
+<input id="party1_address" name="party1_address" class="w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary" placeholder="Full residential/business address" type="text" required/>
 </div>
 </div>
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-<!-- Recent Activity Table -->
-<div class="lg:col-span-2 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden flex flex-col">
-<div class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
-<h2 class="font-bold text-lg">Recent Draft Activity</h2>
-<a href="#all" class="text-sm font-semibold text-primary hover:underline">View All</a>
+</section>
+<!-- Section 2: Party 2 Details -->
+<section class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 flex items-center gap-2">
+<span class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-sm">2</span>
+<h2 class="text-lg font-semibold text-slate-800 dark:text-white">Party 2 Details (Respondent/Defendant - Recipient)</h2>
 </div>
-<div class="overflow-x-auto">
-<table class="w-full text-left">
-<thead class="bg-slate-50 dark:bg-slate-800/50 text-slate-500 text-xs uppercase font-semibold">
-<tr>
-<th class="px-6 py-4">Document Name</th>
-<th class="px-6 py-4">Category</th>
-<th class="px-6 py-4">Last Modified</th>
-<th class="px-6 py-4">Status</th>
-<th class="px-6 py-4"></th>
-</tr>
-</thead>
-<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
-<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
-<td class="px-6 py-4">
-<div class="flex items-center gap-3">
-<span class="material-icons text-slate-400 text-base">description</span>
-<span class="text-sm font-medium">Employment_Contract_V2.pdf</span>
+<div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Full Name *</label>
+<input id="party2_name" name="party2_name" class="w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary" placeholder="Enter legal name" type="text" required/>
 </div>
-</td>
-<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">Corporate</td>
-<td class="px-6 py-4 text-sm text-slate-500">2h ago</td>
-<td class="px-6 py-4">
-<span class="px-2 py-1 text-[10px] font-bold uppercase tracking-wider rounded bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">Finalized</span>
-</td>
-<td class="px-6 py-4 text-right">
-<a href="#more1" class="text-slate-400 hover:text-primary"><span class="material-icons text-sm">more_vert</span></a>
-</td>
-</tr>
-<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
-<td class="px-6 py-4">
-<div class="flex items-center gap-3">
-<span class="material-icons text-slate-400 text-base">description</span>
-<span class="text-sm font-medium">NDA_Template_Global.docx</span>
+<div class="space-y-2">
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Email Address</label>
+<input id="party2_email" name="party2_email" class="w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary" placeholder="email@example.com" type="email"/>
 </div>
-</td>
-<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">Intellectual Prop.</td>
-<td class="px-6 py-4 text-sm text-slate-500">5h ago</td>
-<td class="px-6 py-4">
-<span class="px-2 py-1 text-[10px] font-bold uppercase tracking-wider rounded bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">Drafting</span>
-</td>
-<td class="px-6 py-4 text-right">
-<a href="#more2" class="text-slate-400 hover:text-primary"><span class="material-icons text-sm">more_vert</span></a>
-</td>
-</tr>
-<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
-<td class="px-6 py-4">
-<div class="flex items-center gap-3">
-<span class="material-icons text-slate-400 text-base">description</span>
-<span class="text-sm font-medium">Master_Service_Agreement.pdf</span>
+<div class="space-y-2">
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Contact Number</label>
+<input id="party2_phone" name="party2_phone" class="w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary" placeholder="+91-XXXXXXXXXX" type="tel"/>
 </div>
-</td>
-<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">Corporate</td>
-<td class="px-6 py-4 text-sm text-slate-500">Yesterday</td>
-<td class="px-6 py-4">
-<span class="px-2 py-1 text-[10px] font-bold uppercase tracking-wider rounded bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">In Review</span>
-</td>
-<td class="px-6 py-4 text-right">
-<a href="#more3" class="text-slate-400 hover:text-primary"><span class="material-icons text-sm">more_vert</span></a>
-</td>
-</tr>
-<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
-<td class="px-6 py-4">
-<div class="flex items-center gap-3">
-<span class="material-icons text-slate-400 text-base">description</span>
-<span class="text-sm font-medium">Compliance_Report_Q3.pdf</span>
-</div>
-</td>
-<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">Regulatory</td>
-<td class="px-6 py-4 text-sm text-slate-500">Oct 12</td>
-<td class="px-6 py-4">
-<span class="px-2 py-1 text-[10px] font-bold uppercase tracking-wider rounded bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">Finalized</span>
-</td>
-<td class="px-6 py-4 text-right">
-<a href="#more4" class="text-slate-400 hover:text-primary"><span class="material-icons text-sm">more_vert</span></a>
-</td>
-</tr>
-</tbody>
-</table>
+<div class="space-y-2">
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Physical Address *</label>
+<input id="party2_address" name="party2_address" class="w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary" placeholder="Full residential/business address" type="text" required/>
 </div>
 </div>
-<!-- Legal Categories / Sidebar Content -->
-<div class="space-y-6">
-<!-- Quick Actions -->
-<div class="bg-primary rounded-xl p-6 text-white shadow-lg shadow-primary/20">
-<h3 class="font-bold text-lg mb-4">Quick AI Action</h3>
-<p class="text-white/80 text-sm mb-6 leading-relaxed">Upload any document and Lexis AI will provide an immediate summary and risk analysis.</p>
-<a href="#upload" class="w-full py-3 bg-white text-primary font-bold rounded-lg hover:bg-slate-100 transition-colors flex items-center justify-center gap-2">
-<span class="material-icons">cloud_upload</span>
-                            Upload Document
-                        </a>
+</section>
+<!-- Section 3: Dispute Details -->
+<section class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 flex items-center gap-2">
+<span class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-sm">3</span>
+<h2 class="text-lg font-semibold text-slate-800 dark:text-white">Dispute Description *</h2>
 </div>
-<!-- Categories Grid -->
-<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm">
-<h3 class="font-bold text-slate-900 dark:text-white mb-4">Legal Categories</h3>
-<div class="grid grid-cols-2 gap-3">
-<a href="#corporate" class="flex flex-col items-center justify-center p-4 bg-slate-50 dark:bg-slate-800 rounded-xl hover:ring-2 hover:ring-primary/20 transition-all text-center">
-<span class="material-icons text-primary mb-2">business</span>
-<span class="text-xs font-semibold">Corporate</span>
-</a>
-<a href="#litigation" class="flex flex-col items-center justify-center p-4 bg-slate-50 dark:bg-slate-800 rounded-xl hover:ring-2 hover:ring-primary/20 transition-all text-center">
-<span class="material-icons text-primary mb-2">balance</span>
-<span class="text-xs font-semibold">Litigation</span>
-</a>
-<a href="#ip" class="flex flex-col items-center justify-center p-4 bg-slate-50 dark:bg-slate-800 rounded-xl hover:ring-2 hover:ring-primary/20 transition-all text-center">
-<span class="material-icons text-primary mb-2">copyright</span>
-<span class="text-xs font-semibold">IP Law</span>
-</a>
-<a href="#family" class="flex flex-col items-center justify-center p-4 bg-slate-50 dark:bg-slate-800 rounded-xl hover:ring-2 hover:ring-primary/20 transition-all text-center">
-<span class="material-icons text-primary mb-2">family_restroom</span>
-<span class="text-xs font-semibold">Family</span>
-</a>
+<div class="p-6 space-y-4">
+<div class="space-y-2">
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Describe the Dispute Issue *</label>
+<textarea id="issue" name="issue" class="w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary" placeholder="Provide a chronological account of events, contractual breaches, or legal violations. Be as specific as possible regarding dates, locations, and amounts..." rows="6" required></textarea>
+<p class="text-xs text-slate-500">The AI will use this narrative to structure the legal arguments and citations.</p>
 </div>
 </div>
-<!-- Tips/Insights Card -->
-<div class="bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-100 dark:border-indigo-800/50 rounded-xl p-5">
-<div class="flex items-start gap-3">
-<span class="material-icons text-indigo-600 mt-0.5">lightbulb</span>
-<div>
-<p class="text-sm font-bold text-indigo-900 dark:text-indigo-100">AI Tip of the Day</p>
-<p class="text-xs text-indigo-700 dark:text-indigo-300 mt-1 leading-relaxed">You can now compare two drafts side-by-side using the "Compare" feature in Saved Drafts.</p>
+</section>
+<!-- Section 4 & 5: Category and Extra Info -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<section class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 flex items-center gap-2">
+<span class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-sm">4</span>
+<h2 class="text-lg font-semibold text-slate-800 dark:text-white">Legal Notice Template</h2>
 </div>
-</div>
+<div class="p-6">
+<div class="space-y-2">
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Select Template Format</label>
+<select id="template" name="template" class="w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary">
+<option value="">Let AI Decide (Custom Notice)</option>
+<option value="divorce-cruelty">Divorce Notice (Cruelty & Desertion)</option>
+<option value="rent-default">Rent Default Notice</option>
+<option value="498a-false">False 498A Complaint Notice</option>
+<option value="cheque-bounce">Cheque Bounce Notice</option>
+</select>
+<div class="mt-4 flex flex-wrap gap-2">
+<span class="px-2 py-1 bg-primary/10 text-primary text-[10px] uppercase font-bold tracking-wider rounded">AI Recommended</span>
+<span class="px-2 py-1 bg-slate-100 dark:bg-slate-800 text-slate-500 text-[10px] uppercase font-bold tracking-wider rounded">High Priority</span>
 </div>
 </div>
 </div>
 </section>
+<section class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 flex items-center gap-2">
+<span class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-sm">5</span>
+<h2 class="text-lg font-semibold text-slate-800 dark:text-white">Additional Info</h2>
+</div>
+<div class="p-6">
+<div class="space-y-2">
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Custom Instructions</label>
+<textarea id="custom_instructions" name="custom_instructions" class="w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary text-sm" placeholder="Add specific clauses, tone requirements, or references to existing case laws..." rows="3"></textarea>
+</div>
+</div>
+</section>
+</div>
+<!-- Action Buttons -->
+<div class="flex items-center justify-between pb-12 pt-4">
+<a href="#reset" id="resetBtn" class="px-8 py-3 text-sm font-semibold text-slate-500 hover:text-slate-800 dark:hover:text-white transition-colors flex items-center gap-2">
+<span class="material-icons text-[18px]">refresh</span>
+                Reset Form
+            </a>
+<div class="flex gap-4">
+<a href="/dashboard" class="px-8 py-3 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg font-semibold hover:bg-opacity-80 transition-all">
+    Cancel
+</a>
+<a href="#generate-draft" id="generateDraftBtn" class="px-10 py-3 bg-primary text-white rounded-lg font-semibold hover:bg-opacity-90 transition-all shadow-lg shadow-primary/20 flex items-center gap-2">
+<span class="material-icons text-[18px]">auto_fix_high</span>
+                    Generate Draft
+                </a>
+</div>
+</div>
+</div>
 </main>
+
+<!-- Loading Overlay -->
+<div id="loadingOverlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex flex-col items-center justify-center hidden">
+    <div class="bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-2xl flex flex-col items-center max-w-md text-center border border-slate-200 dark:border-slate-800">
+        <div class="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mb-6"></div>
+        <h3 class="text-xl font-bold mb-2">Generating Legal Notice</h3>
+        <p class="text-sm text-slate-500 leading-relaxed mb-4">Our AI is analyzing the dispute details, referencing relevant Indian statutes (e.g., IPC, Contract Act, Negotiable Instruments Act), and drafting your formal legal notice.</p>
+        <p class="text-xs text-slate-400">This process may take 15-30 seconds. Please do not close this window.</p>
+    </div>
+</div>
+
+<!-- Floating Help Button -->
+<a href="mailto:contact@legalai.assistant" class="fixed bottom-6 right-6 w-12 h-12 bg-primary text-white rounded-full shadow-xl flex items-center justify-center hover:scale-110 transition-transform">
+<span class="material-icons">help_outline</span>
+</a>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const generateDraftBtn = document.getElementById("generateDraftBtn");
+        const generateHeaderBtn = document.getElementById("generateHeaderBtn");
+        const loadingOverlay = document.getElementById("loadingOverlay");
+        const resetBtn = document.getElementById("resetBtn");
+        
+        // Auto-select template from URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const templateParam = urlParams.get("template");
+        if (templateParam) {
+            const templateSelect = document.getElementById("template");
+            if (templateSelect) {
+                templateSelect.value = templateParam;
+            }
+        }
+
+        async function handleGenerate(e) {
+            e.preventDefault();
+            
+            // Collect required inputs
+            const p1_name = document.getElementById("party1_name").value.trim();
+            const p1_address = document.getElementById("party1_address").value.trim();
+            const p2_name = document.getElementById("party2_name").value.trim();
+            const p2_address = document.getElementById("party2_address").value.trim();
+            const issue = document.getElementById("issue").value.trim();
+            
+            if (!p1_name || !p1_address || !p2_name || !p2_address || !issue) {
+                alert("Please fill in all required fields marked with * (Names, Addresses, and Dispute Description).");
+                return;
+            }
+            
+            const payload = {
+                party1_name: p1_name,
+                party1_email: document.getElementById("party1_email").value.trim(),
+                party1_phone: document.getElementById("party1_phone").value.trim(),
+                party1_address: p1_address,
+                party2_name: p2_name,
+                party2_email: document.getElementById("party2_email").value.trim(),
+                party2_phone: document.getElementById("party2_phone").value.trim(),
+                party2_address: p2_address,
+                issue: issue,
+                template: document.getElementById("template").value,
+                custom_instructions: document.getElementById("custom_instructions").value.trim()
+            };
+            
+            // Show loading
+            loadingOverlay.classList.remove("hidden");
+            
+            try {
+                const response = await fetch("/generate-legal-notice", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(payload)
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.id) {
+                    // Success, redirect to drafts view page with the notice ID
+                    window.location.href = `/drafts?id=${data.id}`;
+                } else {
+                    alert("Error generating notice: " + (data.detail || "Server error occurred"));
+                    loadingOverlay.classList.add("hidden");
+                }
+            } catch (err) {
+                console.error("Error:", err);
+                alert("Failed to connect to the server. Please check that the server is running.");
+                loadingOverlay.classList.add("hidden");
+            }
+        }
+        
+        if (generateDraftBtn) generateDraftBtn.addEventListener("click", handleGenerate);
+        if (generateHeaderBtn) generateHeaderBtn.addEventListener("click", handleGenerate);
+        
+        if (resetBtn) {
+            resetBtn.addEventListener("click", (e) => {
+                e.preventDefault();
+                if (confirm("Are you sure you want to clear all form fields?")) {
+                    document.querySelectorAll("input, textarea, select").forEach(el => el.value = "");
+                }
+            });
+        }
+    });
+</script>
 </body>
 </html>

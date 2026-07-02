@@ -96,11 +96,11 @@ def generate_pdf(text: str, filename: str = "legal_notice.pdf") -> str:
         c.drawRightString(width - margin_x, margin_y, f"Page {page_num}")
         
         c.save()
-        print(f"✅ PDF saved: {temp_path}")
+        print(f"[PDF] PDF saved: {temp_path}")
         return temp_path
     
     except Exception as e:
-        print(f"❌ PDF Error: {str(e)}")
+        print(f"[PDF] PDF Error: {str(e)}")
         raise HTTPException(status_code=500, detail=f"PDF generation failed: {str(e)}")
 
 def wrap_text(text: str, max_width: float, canvas_obj, font_name: str, font_size: int) -> list:

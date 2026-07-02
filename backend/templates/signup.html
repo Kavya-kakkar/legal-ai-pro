@@ -54,5 +54,17 @@ Already have an account?
 
 </div>
 
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const error = urlParams.get('error');
+    
+    if (error) {
+        const alertDiv = document.createElement('div');
+        alertDiv.className = 'p-3 mb-4 text-sm text-red-700 bg-red-100 rounded-lg text-center font-medium';
+        alertDiv.textContent = error;
+        document.querySelector('form').before(alertDiv);
+    }
+</script>
+
 </body>
-</html>
+</html>

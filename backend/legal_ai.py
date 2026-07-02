@@ -124,10 +124,10 @@ def test_connection() -> bool:
     try:
         simple_prompt = "Draft a one-sentence legal notice."
         generate_legal_draft(simple_prompt)
-        print("✅ OpenRouter API connection successful")
+        print("[API] OpenRouter API connection successful")
         return True
     except Exception as e:
-        print(f"❌ API test failed: {e}")
+        print(f"[API] API test failed: {e}")
         return False
 
 if __name__ == "__main__":

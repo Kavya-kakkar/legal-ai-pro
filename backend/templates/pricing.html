@@ -1,61 +1,216 @@
 <!DOCTYPE html>
-<html>
+<html class="light" lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pricing - Legal AI</title>
-<script src="https://cdn.tailwindcss.com"></script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pricing - Legal AI Assistant</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1142d4",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101522",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
 </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display transition-colors duration-300 min-h-screen flex flex-col">
 
-<body class="bg-slate-50">
-
-<nav class="bg-white shadow p-4 flex justify-between">
-<a href="/" class="font-bold text-blue-600">Legal AI</a>
-<div class="space-x-6 text-sm font-medium">
-<a href="/features">Features</a>
-<a href="/drafting">Drafting Tools</a>
-<a href="/pricing" class="text-blue-600">Pricing</a>
-<a href="/about">About</a>
+<!-- Navigation -->
+<nav class="sticky top-0 z-50 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-primary/10">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between h-20 items-center">
+<div class="flex items-center gap-2">
+<div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+<span class="material-icons text-white">gavel</span>
+</div>
+<a href="/" class="text-xl font-bold tracking-tight text-primary dark:text-white">Legal AI</a>
+</div>
+<div class="hidden md:flex items-center space-x-8">
+<a class="text-sm font-medium hover:text-primary transition-colors" href="/features">Features</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="/drafting">Drafting Tools</a>
+<a class="text-sm font-semibold text-primary transition-colors" href="/pricing">Pricing</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="/about">About</a>
+</div>
+<div class="flex items-center gap-4">
+<a href="/login" class="text-sm font-medium hover:text-primary transition-colors">Login</a>
+<a href="/signup" class="bg-primary hover:bg-primary/90 text-white px-5 py-2.5 rounded-lg text-sm font-semibold transition-all shadow-lg shadow-primary/20">
+                        Get Started
+                    </a>
+</div>
+</div>
 </div>
 </nav>
 
-<section class="py-20 text-center">
-<h1 class="text-4xl font-bold mb-8">Simple Pricing</h1>
-
-<div class="max-w-5xl mx-auto grid md:grid-cols-3 gap-8 px-6">
-
-<div class="bg-white p-8 rounded-xl shadow">
-<h3 class="font-bold text-xl mb-4">Starter</h3>
-<p class="text-4xl font-bold mb-4">Free</p>
-<ul class="text-sm text-slate-600 space-y-2">
-<li>✔ 10 Drafts / Month</li>
-<li>✔ Basic Templates</li>
-<li>✔ Email Support</li>
-</ul>
+<!-- Hero Section -->
+<section class="relative overflow-hidden pt-20 pb-16 lg:pt-24 lg:pb-20">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-wider mb-6">
+<span class="material-icons text-sm">payments</span> Transparent Subscription Plans
 </div>
-
-<div class="bg-blue-600 text-white p-8 rounded-xl shadow-lg scale-105">
-<h3 class="font-bold text-xl mb-4">Professional</h3>
-<p class="text-4xl font-bold mb-4">₹999/mo</p>
-<ul class="text-sm space-y-2">
-<li>✔ Unlimited Drafts</li>
-<li>✔ Advanced AI Tools</li>
-<li>✔ Priority Support</li>
-</ul>
-</div>
-
-<div class="bg-white p-8 rounded-xl shadow">
-<h3 class="font-bold text-xl mb-4">Enterprise</h3>
-<p class="text-4xl font-bold mb-4">Custom</p>
-<ul class="text-sm text-slate-600 space-y-2">
-<li>✔ Custom Integrations</li>
-<li>✔ Team Access</li>
-<li>✔ Dedicated Support</li>
-</ul>
-</div>
-
+<h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-8">
+                Simple, Fair <span class="text-primary">Pricing</span>
+            </h1>
+<p class="text-lg lg:text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+                Choose the plan that fits your legal workflow. Standardize notice production and save billable hours.
+            </p>
 </div>
 </section>
+
+<!-- Pricing Grid -->
+<section class="py-12 bg-white dark:bg-slate-900/50 flex-grow">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+<!-- Starter Plan -->
+<div class="bg-background-light dark:bg-background-dark p-8 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-primary/20 transition-all flex flex-col justify-between">
+    <div>
+        <h3 class="font-bold text-xl mb-2">Starter</h3>
+        <p class="text-4xl font-extrabold my-4 text-slate-900 dark:text-white">Free</p>
+        <p class="text-slate-500 text-xs mb-6">Great for trying out AI legal tools</p>
+        <ul class="text-sm text-slate-600 dark:text-slate-400 space-y-3">
+            <li class="flex items-center gap-2"><span class="material-icons text-primary text-sm">check</span> 10 Drafts / Month</li>
+            <li class="flex items-center gap-2"><span class="material-icons text-primary text-sm">check</span> Basic Notice Templates</li>
+            <li class="flex items-center gap-2"><span class="material-icons text-primary text-sm">check</span> Standard Email Support</li>
+        </ul>
+    </div>
+    <a href="/signup" class="block text-center w-full py-2.5 mt-8 border border-primary text-primary font-bold rounded-xl hover:bg-primary hover:text-white transition-all text-sm">
+        Start Free Trial
+    </a>
+</div>
+
+<!-- Professional Plan -->
+<div class="bg-primary text-white p-8 rounded-2xl border border-primary/20 shadow-xl transform md:scale-105 flex flex-col justify-between">
+    <div>
+        <div class="flex items-center justify-between">
+            <h3 class="font-bold text-xl">Professional</h3>
+            <span class="bg-white/20 text-white text-[9px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full">Popular</span>
+        </div>
+        <p class="text-4xl font-extrabold my-4">₹999<span class="text-sm font-normal">/mo</span></p>
+        <p class="text-white/80 text-xs mb-6">Best for practitioners & small law offices</p>
+        <ul class="text-sm space-y-3">
+            <li class="flex items-center gap-2"><span class="material-icons text-sm">check</span> Unlimited Notice Drafts</li>
+            <li class="flex items-center gap-2"><span class="material-icons text-sm">check</span> Advanced AI Notice Presets</li>
+            <li class="flex items-center gap-2"><span class="material-icons text-sm">check</span> Priority Email & Chat Support</li>
+            <li class="flex items-center gap-2"><span class="material-icons text-sm">check</span> Export to high-quality PDF/Print</li>
+        </ul>
+    </div>
+    <a href="/signup" class="block text-center w-full py-2.5 mt-8 bg-white text-primary font-bold rounded-xl hover:bg-slate-100 transition-all text-sm shadow-md">
+        Upgrade Now
+    </a>
+</div>
+
+<!-- Enterprise Plan -->
+<div class="bg-background-light dark:bg-background-dark p-8 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-primary/20 transition-all flex flex-col justify-between">
+    <div>
+        <h3 class="font-bold text-xl mb-2">Enterprise</h3>
+        <p class="text-4xl font-extrabold my-4 text-slate-900 dark:text-white">Custom</p>
+        <p class="text-slate-500 text-xs mb-6">Designed for larger law firms & enterprises</p>
+        <ul class="text-sm text-slate-600 dark:text-slate-400 space-y-3">
+            <li class="flex items-center gap-2"><span class="material-icons text-primary text-sm">check</span> Custom API Integration</li>
+            <li class="flex items-center gap-2"><span class="material-icons text-primary text-sm">check</span> Multi-User Shared Seat Licenses</li>
+            <li class="flex items-center gap-2"><span class="material-icons text-primary text-sm">check</span> Dedicated Relationship Manager</li>
+            <li class="flex items-center gap-2"><span class="material-icons text-primary text-sm">check</span> 99.9% Uptime SLA Guarantee</li>
+        </ul>
+    </div>
+    <a href="mailto:contact@legalai.assistant" class="block text-center w-full py-2.5 mt-8 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-bold rounded-xl hover:border-primary hover:text-primary transition-all text-sm">
+        Contact Sales
+    </a>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-slate-50 dark:bg-slate-950 pt-20 pb-10 border-t border-slate-200 dark:border-slate-900">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+<div>
+<div class="flex items-center gap-2 mb-6">
+<div class="w-8 h-8 bg-primary rounded flex items-center justify-center">
+<span class="material-icons text-white text-lg">gavel</span>
+</div>
+<span class="text-lg font-bold tracking-tight text-primary dark:text-white">Legal AI</span>
+</div>
+<p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                        Modernizing legal infrastructure through artificial intelligence. We empower lawyers to focus on what matters: the law.
+                    </p>
+</div>
+<div>
+<h4 class="font-bold mb-6">Quick Links</h4>
+<ul class="space-y-4 text-sm text-slate-500 dark:text-slate-400">
+<li><a class="hover:text-primary transition-colors" href="/case-studies">Case Studies</a></li>
+<li><a class="hover:text-primary transition-colors" href="/templates">Document Templates</a></li>
+<li><a class="hover:text-primary transition-colors" href="/api-docs">API Documentation</a></li>
+<li><a class="hover:text-primary transition-colors" href="/privacy-policy">Privacy Policy</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold mb-6">Contact</h4>
+<ul class="space-y-4 text-sm text-slate-500 dark:text-slate-400">
+<li class="flex items-center gap-3">
+<span class="material-icons text-primary text-sm">email</span>
+<a href="mailto:contact@legalai.assistant">contact@legalai.assistant</a>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-icons text-primary text-sm">phone</span>
+                            +1 (555) 902-1234
+                        </li>
+<li class="flex items-center gap-3">
+<span class="material-icons text-primary text-sm">location_on</span>
+                            Law Tower, Silicon Valley, CA
+                        </li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold mb-6">Newsletter</h4>
+<p class="text-sm text-slate-500 mb-4">Stay updated with legal tech trends.</p>
+<div class="flex">
+<input class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-l-lg px-4 py-2 w-full focus:outline-none focus:border-primary" placeholder="Your email" type="email"/>
+<a href="#newsletter" class="bg-primary text-white px-4 py-2 rounded-r-lg hover:bg-primary/90 transition-colors">
+<span class="material-icons text-sm">send</span>
+</a>
+</div>
+</div>
+</div>
+<div class="border-t border-slate-200 dark:border-slate-900 pt-8 mt-8 flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="bg-primary/5 px-4 py-3 rounded-lg border border-primary/10 max-w-3xl">
+<p class="text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-1">Legal Disclaimer</p>
+<p class="text-[11px] text-slate-500 leading-normal">
+                        Legal AI is an automated drafting assistant and does not constitute legal advice. The software is designed to assist professionals in document generation. Users should always review documents with qualified legal counsel before service or filing. Use of this service is subject to our Terms of Service.
+                    </p>
+</div>
+<div class="flex gap-6">
+<a class="text-slate-400 hover:text-primary transition-colors" href="#"><span class="material-icons">facebook</span></a>
+<a class="text-slate-400 hover:text-primary transition-colors" href="#"><span class="material-icons">alternate_email</span></a>
+<a class="text-slate-400 hover:text-primary transition-colors" href="#"><span class="material-icons">language</span></a>
+</div>
+</div>
+<div class="text-center mt-12">
+<p class="text-xs text-slate-400">© 2026 Legal AI Drafting Systems Inc. All rights reserved.</p>
+</div>
+</div>
+</footer>
 
 </body>
 </html>

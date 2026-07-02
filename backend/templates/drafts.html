@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Legal AI Assistant - Draft Preview</title>
+<title>Legal AI Assistant - Draft Preview & Editor</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
@@ -19,7 +19,8 @@
                         "background-dark": "#101522",
                     },
                     fontFamily: {
-                        "display": ["Inter", "sans-serif"]
+                        "display": ["Inter", "sans-serif"],
+                        "serif": ["Merriweather", "serif"]
                     },
                     borderRadius: {
                         "DEFAULT": "0.25rem",
@@ -36,12 +37,20 @@
             font-family: 'Inter', sans-serif;
         }
         .document-shadow {
-            box-shadow: 0 4px 20px -2px rgba(17, 66, 212, 0.08), 0 2px 4px -1px rgba(17, 66, 212, 0.04);
+            box-shadow: 0 4px 25px -2px rgba(17, 66, 212, 0.12), 0 2px 8px -1px rgba(17, 66, 212, 0.06);
         }
         .paper-page {
             width: 100%;
             max-width: 800px;
-            min-height: 1120px;
+            min-height: 1050px;
+        }
+        .editable-active {
+            outline: 2px dashed #1142d4;
+            outline-offset: 4px;
+            background-color: #fcfdff;
+        }
+        .dark .editable-active {
+            background-color: #161c2e;
         }
         @media print {
             .no-print { display: none; }
@@ -59,21 +68,21 @@
 <div class="w-8 h-8 bg-primary rounded flex items-center justify-center">
 <span class="material-icons text-white text-sm">gavel</span>
 </div>
-<span class="font-bold text-xl tracking-tight text-primary">Legal AI Assistant</span>
+<a href="/" class="font-bold text-xl tracking-tight text-primary">Legal AI</a>
 </div>
 <div class="h-6 w-[1px] bg-primary/20 mx-2"></div>
 <nav class="flex items-center text-sm font-medium text-slate-500">
-<a class="hover:text-primary transition-colors" href="#drafts">Drafts</a>
+<a class="hover:text-primary transition-colors" href="/dashboard">Dashboard</a>
 <span class="material-icons text-xs mx-2">chevron_right</span>
-<span class="text-slate-900 dark:text-white">Notice of Breach</span>
+<span class="text-slate-900 dark:text-white" id="navNoticeTitle">Notice Draft</span>
 </nav>
 </div>
 <div class="flex items-center gap-4">
-<span class="flex items-center gap-2 px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-semibold rounded-full">
+<span id="statusBadge" class="flex items-center gap-2 px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-semibold rounded-full">
 <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
                 DRAFT READY
             </span>
-<a href="#profile" class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary/20 transition-colors">
+<a href="/dashboard" class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary/20 transition-colors">
 <span class="material-icons">account_circle</span>
 </a>
 </div>
@@ -83,109 +92,49 @@
 <!-- Action Toolbar -->
 <div class="w-full max-w-[800px] mb-6 flex flex-wrap items-center justify-between gap-4 no-print">
 <div class="flex items-center gap-2">
-<a href="#edit" class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-primary/20 rounded-lg text-sm font-semibold text-slate-700 dark:text-slate-300 hover:border-primary transition-all">
-<span class="material-icons text-sm text-primary">edit</span>
-                    Edit Draft
-                </a>
-<a href="#save" class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-primary/20 rounded-lg text-sm font-semibold text-slate-700 dark:text-slate-300 hover:border-primary transition-all">
+<button id="editBtn" class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-primary/20 rounded-lg text-sm font-semibold text-slate-700 dark:text-slate-300 hover:border-primary transition-all">
+<span class="material-icons text-sm text-primary" id="editIcon">edit</span>
+                    <span id="editText">Edit Draft</span>
+                </button>
+<button id="saveBtn" class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-primary/20 rounded-lg text-sm font-semibold text-slate-700 dark:text-slate-300 hover:border-primary transition-all" disabled>
 <span class="material-icons text-sm text-primary">save</span>
-                    Save Copy
-                </a>
+                    Save Edits
+                </button>
 </div>
 <div class="flex items-center gap-2">
-<a href="#download" class="flex items-center gap-2 px-6 py-2 bg-primary text-white rounded-lg text-sm font-bold shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all">
+<button id="downloadBtn" class="flex items-center gap-2 px-6 py-2 bg-primary text-white rounded-lg text-sm font-bold shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all">
 <span class="material-icons text-sm">picture_as_pdf</span>
                     Download PDF
-                </a>
-<a href="#print" class="w-10 h-10 flex items-center justify-center bg-white dark:bg-slate-800 border border-primary/20 rounded-lg text-slate-600 dark:text-slate-400 hover:text-primary transition-colors" title="Print">
+                </button>
+<button id="printBtn" class="w-10 h-10 flex items-center justify-center bg-white dark:bg-slate-800 border border-primary/20 rounded-lg text-slate-600 dark:text-slate-400 hover:text-primary transition-colors" title="Print">
 <span class="material-icons text-lg">print</span>
-</a>
+</button>
 </div>
 </div>
 <!-- Document Viewer -->
-<div class="paper-page bg-white dark:bg-slate-900 p-12 sm:p-20 document-shadow rounded-lg mb-10 overflow-hidden relative">
-<!-- Document Watermark (Optional decoration) -->
-<div class="absolute top-0 right-0 p-8 opacity-5">
-<span class="material-icons text-8xl transform rotate-12">gavel</span>
+<div class="paper-page bg-white dark:bg-slate-900 p-12 sm:p-20 document-shadow rounded-lg mb-10 overflow-hidden relative border border-slate-200 dark:border-slate-800">
+<!-- Document Watermark -->
+<div class="absolute top-0 right-0 p-8 opacity-5 select-none pointer-events-none">
+<span class="material-icons text-9xl transform rotate-12">gavel</span>
 </div>
 <!-- Legal Notice Content -->
-<div class="relative z-10 space-y-8">
-<!-- Header -->
-<div class="flex justify-between items-start">
-<div class="space-y-1">
-<p class="text-xs font-bold text-primary uppercase tracking-widest">Formal Notice</p>
-<h1 class="text-2xl font-bold text-slate-900 dark:text-white">NOTICE OF CONTRACTUAL BREACH</h1>
+<div class="relative z-10 space-y-6">
+<!-- Metadata (Non-printable) -->
+<div class="flex justify-between items-start text-xs text-slate-400 border-b border-slate-100 dark:border-slate-800 pb-4 no-print">
+    <div>
+        <p>Ref: <span id="docRef">AI-DRAFT-TEMP</span></p>
+    </div>
+    <div class="text-right">
+        <p>Generated: <span id="docDate">October 24, 2026</span></p>
+    </div>
 </div>
-<div class="text-right">
-<p class="text-sm font-medium text-slate-500">Date: October 24, 2023</p>
-<p class="text-sm font-medium text-slate-500">Ref: AI-DRAFT-09822</p>
+
+<!-- Main Draft Text Area -->
+<div id="noticeContent" class="font-serif whitespace-pre-line text-slate-800 dark:text-slate-200 leading-relaxed text-[15px] text-justify focus:outline-none min-h-[700px] p-2" contenteditable="false">
+Loading your legal notice...
 </div>
+
 </div>
-<div class="h-[1px] bg-slate-200 dark:bg-slate-700 w-full"></div>
-<!-- Parties -->
-<div class="grid grid-cols-2 gap-8 text-sm leading-relaxed">
-<div class="space-y-2">
-<p class="font-bold text-slate-900 dark:text-white uppercase tracking-tight">From:</p>
-<p class="text-slate-600 dark:text-slate-400">
-                            Sterling & Associates LLC<br/>
-                            1200 Financial Plaza<br/>
-                            New York, NY 10014
-                        </p>
-</div>
-<div class="space-y-2 text-right">
-<p class="font-bold text-slate-900 dark:text-white uppercase tracking-tight">To:</p>
-<p class="text-slate-600 dark:text-slate-400">
-                            Meridian Systems Corp<br/>
-                            88 Industrial Way<br/>
-                            San Francisco, CA 94103
-                        </p>
-</div>
-</div>
-<!-- Subject -->
-<div class="bg-primary/5 dark:bg-primary/10 p-4 rounded-lg">
-<p class="text-sm font-semibold text-slate-900 dark:text-white">
-<span class="text-primary mr-2">SUBJECT:</span> Formal Notice of Default Regarding Service Level Agreement #442-B
-                    </p>
-</div>
-<!-- Body -->
-<div class="space-y-6 text-slate-700 dark:text-slate-300 leading-relaxed text-[15px] text-justify">
-<p>Dear Mr. Henderson,</p>
-<p>This letter serves as a formal notification that Meridian Systems Corp ("the Contractor") is currently in material breach of its obligations under the Service Agreement dated January 15, 2023, specifically pertaining to Section 4.2: Performance Metrics and Response Times.</p>
-<div class="space-y-4 ml-4">
-<div class="flex gap-4">
-<span class="font-bold text-slate-900 dark:text-white min-w-[30px]">1.0</span>
-<p><span class="font-semibold text-slate-900 dark:text-white underline">Nature of Breach:</span> Since September 1, 2023, the Contractor has failed to maintain the required 99.9% system uptime, resulting in documented outages totaling 14.5 hours across the third fiscal quarter.</p>
-</div>
-<div class="flex gap-4">
-<span class="font-bold text-slate-900 dark:text-white min-w-[30px]">2.0</span>
-<p><span class="font-semibold text-slate-900 dark:text-white underline">Cure Period:</span> Pursuant to Section 11.4 of the Agreement, the Contractor is hereby granted a period of thirty (30) business days from the receipt of this notice to rectify the aforementioned breach and provide a comprehensive service restoration plan.</p>
-</div>
-<div class="flex gap-4">
-<span class="font-bold text-slate-900 dark:text-white min-w-[30px]">3.0</span>
-<p><span class="font-semibold text-slate-900 dark:text-white underline">Reservation of Rights:</span> Failure to cure this breach within the specified timeframe may lead to the immediate termination of the Agreement and the pursuit of all legal remedies, including but not limited to, compensatory damages and injunctive relief.</p>
-</div>
-</div>
-<p>We request your urgent attention to this matter. Please acknowledge receipt of this notice within forty-eight (48) hours and specify your intended course of action.</p>
-</div>
-<!-- Signature Section -->
-<div class="pt-12 space-y-8">
-<p>Sincerely,</p>
-<div class="space-y-1">
-<div class="h-10 w-48 border-b border-slate-300 dark:border-slate-600 mb-2"></div>
-<p class="font-bold text-slate-900 dark:text-white">Marcus V. Thorne, Esq.</p>
-<p class="text-xs text-slate-500 uppercase tracking-widest font-medium">Principal Counsel | Sterling & Associates</p>
-</div>
-</div>
-</div>
-</div>
-<!-- Zoom/Utilities (Optional) -->
-<div class="fixed bottom-24 right-8 flex flex-col gap-2 no-print">
-<a href="#zoom-in" class="w-12 h-12 bg-white dark:bg-slate-800 rounded-full shadow-lg flex items-center justify-center text-slate-600 dark:text-slate-400 hover:text-primary border border-primary/10">
-<span class="material-icons">zoom_in</span>
-</a>
-<a href="#help" class="w-12 h-12 bg-white dark:bg-slate-800 rounded-full shadow-lg flex items-center justify-center text-slate-600 dark:text-slate-400 hover:text-primary border border-primary/10">
-<span class="material-icons">help_outline</span>
-</a>
 </div>
 </main>
 <!-- Professional Footer Disclaimer -->
@@ -198,10 +147,198 @@
                 </p>
 </div>
 <div class="flex gap-6 text-[10px] uppercase font-bold text-slate-400 tracking-widest">
-<a class="hover:text-primary transition-colors" href="#terms">Terms of Service</a>
-<a class="hover:text-primary transition-colors" href="#privacy">Privacy Policy</a>
+<a class="hover:text-primary transition-colors" href="/privacy-policy">Privacy Policy</a>
+<a class="hover:text-primary transition-colors" href="/api-docs">API Documentation</a>
 </div>
 </div>
 </footer>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // Elements
+        const noticeContent = document.getElementById("noticeContent");
+        const docRef = document.getElementById("docRef");
+        const docDate = document.getElementById("docDate");
+        const navNoticeTitle = document.getElementById("navNoticeTitle");
+        const editBtn = document.getElementById("editBtn");
+        const editText = document.getElementById("editText");
+        const editIcon = document.getElementById("editIcon");
+        const saveBtn = document.getElementById("saveBtn");
+        const downloadBtn = document.getElementById("downloadBtn");
+        const printBtn = document.getElementById("printBtn");
+        const statusBadge = document.getElementById("statusBadge");
+
+        // Parse notice ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const noticeId = urlParams.get("id");
+
+        let isEditing = false;
+        let originalText = "";
+
+        if (!noticeId) {
+            // No ID provided, show mock fallback
+            statusBadge.innerHTML = `<span class="w-2 h-2 bg-amber-500 rounded-full"></span> DEMO PREVIEW`;
+            statusBadge.className = "flex items-center gap-2 px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-xs font-semibold rounded-full";
+            
+            docRef.textContent = "AI-DRAFT-MOCK";
+            docDate.textContent = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+            
+            noticeContent.innerHTML = `LEGAL NOTICE
+
+To,
+Meridian Systems Corp
+88 Industrial Way
+San Francisco, CA 94103
+
+Subject: Formal Notice of Default Regarding Service Level Agreement #442-B
+
+Sir/Madam,
+
+Under instructions from our client, Sterling & Associates LLC, we hereby serve you with this formal notice of contractual breach. 
+
+Since September 1, 2023, you have failed to maintain the required 99.9% system uptime, resulting in documented outages totaling 14.5 hours across the third fiscal quarter, constituting a material breach of Section 4.2 of the Service Agreement.
+
+You are hereby called upon to cure this breach within thirty (30) business days from the receipt of this notice by rectifying the service deficiencies and providing a comprehensive service restoration plan. 
+
+Failure to do so will result in immediate termination of the agreement and the filing of legal proceedings at your cost and consequences.
+
+Sincerely,
+Marcus V. Thorne, Esq.
+Principal Counsel`;
+            
+            editBtn.style.display = "none";
+            saveBtn.style.display = "none";
+            downloadBtn.disabled = true;
+            downloadBtn.classList.add("opacity-50", "cursor-not-allowed");
+        } else {
+            // Load notice details from API
+            fetchNotice();
+        }
+
+        async function fetchNotice() {
+            try {
+                const response = await fetch(`/api/notice/${noticeId}`);
+                if (!response.ok) throw new Error("Failed to fetch notice");
+                
+                const data = await response.json();
+                
+                docRef.textContent = `AI-DRAFT-${data.id}`;
+                docDate.textContent = data.date;
+                navNoticeTitle.textContent = `Draft #${data.id} - ${data.party2_name}`;
+                
+                // Set text content
+                noticeContent.textContent = data.draft_text;
+                originalText = data.draft_text;
+            } catch (err) {
+                console.error(err);
+                noticeContent.innerHTML = `<span class="text-red-500">Error loading notice details. Please make sure the server is running and the notice ID is valid.</span>`;
+            }
+        }
+
+        // Toggle Edit
+        editBtn.addEventListener("click", () => {
+            isEditing = !isEditing;
+            
+            if (isEditing) {
+                noticeContent.contentEditable = "true";
+                noticeContent.classList.add("editable-active");
+                noticeContent.focus();
+                
+                editText.textContent = "Cancel";
+                editIcon.textContent = "close";
+                saveBtn.disabled = false;
+            } else {
+                // Cancel edit, restore original text
+                noticeContent.contentEditable = "false";
+                noticeContent.classList.remove("editable-active");
+                noticeContent.textContent = originalText;
+                
+                editText.textContent = "Edit Draft";
+                editIcon.textContent = "edit";
+                saveBtn.disabled = true;
+            }
+        });
+
+        // Save Edits
+        saveBtn.addEventListener("click", async () => {
+            const updatedText = noticeContent.textContent;
+            
+            try {
+                const response = await fetch(`/api/notice/${noticeId}/update`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ draft_text: updatedText })
+                });
+                
+                if (response.ok) {
+                    originalText = updatedText;
+                    
+                    // Exit edit mode
+                    isEditing = false;
+                    noticeContent.contentEditable = "false";
+                    noticeContent.classList.remove("editable-active");
+                    editText.textContent = "Edit Draft";
+                    editIcon.textContent = "edit";
+                    saveBtn.disabled = true;
+                    
+                    alert("Draft saved successfully!");
+                } else {
+                    alert("Failed to save changes.");
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Error saving changes.");
+            }
+        });
+
+        // Download PDF
+        downloadBtn.addEventListener("click", async () => {
+            if (!noticeId) return;
+            
+            downloadBtn.disabled = true;
+            downloadBtn.innerHTML = `<span class="animate-spin inline-block mr-2 w-4 h-4 border-2 border-white border-t-transparent rounded-full"></span> Downloading...`;
+            
+            try {
+                const payload = {
+                    notice_id: parseInt(noticeId),
+                    draft_text: noticeContent.textContent
+                };
+                
+                const response = await fetch("/download-pdf", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!response.ok) throw new Error("Failed to download PDF");
+                
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = `Legal_Notice_${noticeId}.pdf`;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                window.URL.revokeObjectURL(url);
+            } catch (err) {
+                console.error(err);
+                alert("Failed to generate and download PDF. Please try again.");
+            } finally {
+                downloadBtn.disabled = false;
+                downloadBtn.innerHTML = `<span class="material-icons text-sm">picture_as_pdf</span> Download PDF`;
+            }
+        });
+
+        // Print page
+        printBtn.addEventListener("click", () => {
+            window.print();
+        });
+    });
+</script>
 </body>
 </html>

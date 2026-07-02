@@ -123,19 +123,19 @@ async def index(request: Request):
 
 @app.get("/features", response_class=HTMLResponse)
 async def features(request: Request):
-    return templates.TemplateResponse("features.html", {"request": request})
+    return templates.TemplateResponse("features.html", {"request": request, "user_name": get_current_user_name(request)})
 
 @app.get("/drafting", response_class=HTMLResponse)
 async def drafting(request: Request):
-    return templates.TemplateResponse("drafting.html", {"request": request})
+    return templates.TemplateResponse("drafting.html", {"request": request, "user_name": get_current_user_name(request)})
 
 @app.get("/pricing", response_class=HTMLResponse)
 async def pricing(request: Request):
-    return templates.TemplateResponse("pricing.html", {"request": request})
+    return templates.TemplateResponse("pricing.html", {"request": request, "user_name": get_current_user_name(request)})
 
 @app.get("/about", response_class=HTMLResponse)
 async def about(request: Request):
-    return templates.TemplateResponse("about.html", {"request": request})
+    return templates.TemplateResponse("about.html", {"request": request, "user_name": get_current_user_name(request)})
 
 @app.get("/dashboard", response_class=HTMLResponse)
 async def dashboard(request: Request):
@@ -163,23 +163,38 @@ async def templates_page(request: Request):
 
 @app.get("/drafts", response_class=HTMLResponse)
 async def drafts(request: Request):
-    return templates.TemplateResponse("drafts.html", {"request": request})
+    return templates.TemplateResponse("drafts.html", {
+        "request": request,
+        "user_name": get_current_user_name(request)
+    })
 
 @app.get("/case-studies", response_class=HTMLResponse)
 async def case_studies(request: Request):
-    return templates.TemplateResponse("case_studies.html", {"request": request})
+    return templates.TemplateResponse("case_studies.html", {
+        "request": request,
+        "user_name": get_current_user_name(request)
+    })
 
 @app.get("/document-templates", response_class=HTMLResponse)
 async def document_templates(request: Request):
-    return templates.TemplateResponse("document_templates.html", {"request": request})
+    return templates.TemplateResponse("document_templates.html", {
+        "request": request,
+        "user_name": get_current_user_name(request)
+    })
 
 @app.get("/api-docs", response_class=HTMLResponse)
 async def api_docs_page(request: Request):
-    return templates.TemplateResponse("api_docs.html", {"request": request})
+    return templates.TemplateResponse("api_docs.html", {
+        "request": request,
+        "user_name": get_current_user_name(request)
+    })
 
 @app.get("/privacy-policy", response_class=HTMLResponse)
 async def privacy_policy(request: Request):
-    return templates.TemplateResponse("privacy_policy.html", {"request": request})
+    return templates.TemplateResponse("privacy_policy.html", {
+        "request": request,
+        "user_name": get_current_user_name(request)
+    })
 
 # Redirects for old routes to prevent 404s
 @app.get("/landing")

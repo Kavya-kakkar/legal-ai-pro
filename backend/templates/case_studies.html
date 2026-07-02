@@ -1,65 +1,177 @@
 <!DOCTYPE html>
 <html class="light" lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Case Studies - Legal AI</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Case Studies - Legal AI Assistant</title>
+<meta name="description" content="Discover how legal professionals and enterprises are using Legal AI to automate drafting, save time, and reduce errors."/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    "primary": "#1142d4",
+                    "background-light": "#f6f6f8",
+                    "background-dark": "#101522",
+                },
+                fontFamily: { "display": ["Inter", "sans-serif"] },
+                borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+            },
+        },
+    }
+</script>
 </head>
-<body class="bg-slate-50 text-slate-900 font-sans min-h-screen flex flex-col">
+<body class="font-display bg-background-light dark:bg-background-dark text-slate-800 dark:text-slate-200 min-h-screen flex">
 
-<!-- Navbar -->
-<nav class="bg-white shadow px-6 py-4 flex justify-between items-center">
-    <div class="flex items-center gap-2">
-        <div class="w-8 h-8 bg-blue-600 rounded flex items-center justify-center">
-            <span class="material-icons text-white text-sm">gavel</span>
-        </div>
-        <a href="/" class="font-bold text-xl text-blue-600">Legal AI</a>
-    </div>
-    <div class="flex gap-6 text-slate-600 font-medium text-sm">
-        <a href="/" class="hover:text-blue-600 transition-colors">Home</a>
-        <a href="/dashboard" class="hover:text-blue-600 transition-colors">Dashboard</a>
-        <a href="/create" class="hover:text-blue-600 transition-colors">Create Notice</a>
-        <a href="/templates" class="hover:text-blue-600 transition-colors">Templates</a>
-    </div>
+<!-- Sidebar Navigation -->
+<aside class="w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark flex flex-col sticky top-0 h-screen hidden lg:flex">
+<div class="p-6 flex items-center gap-3">
+<div class="bg-primary p-2 rounded-lg">
+<span class="material-icons text-white">gavel</span>
+</div>
+<a href="/" class="font-bold text-xl tracking-tight text-primary">LegalAI</a>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="/dashboard">
+    <span class="material-icons text-[20px]">dashboard</span>
+    <span class="font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="/create">
+<span class="material-icons text-[20px]">description</span>
+<span class="font-medium">Create Draft</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="/templates">
+<span class="material-icons text-[20px]">article</span>
+<span class="font-medium">Templates</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-primary/10 text-primary rounded-lg transition-colors" href="/case-studies">
+<span class="material-icons text-[20px]">assignment</span>
+<span class="font-medium">Case Files</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="/about">
+<span class="material-icons text-[20px]">info</span>
+<span class="font-medium">About</span>
+</a>
 </nav>
+<div class="p-4 border-t border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-3 px-2 py-3">
+<div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+<span class="material-icons">account_circle</span>
+</div>
+<div class="overflow-hidden">
+<p class="text-sm font-semibold truncate">{{ user_name }}</p>
+<p class="text-xs text-slate-500 truncate"><a href="/logout" class="text-red-500 hover:underline">Logout</a></p>
+</div>
+</div>
+</div>
+</aside>
 
-<!-- Content -->
-<main class="flex-grow max-w-6xl mx-auto py-16 px-6 w-full">
-    <div class="text-center mb-12">
-        <h1 class="text-4xl font-bold mb-4 text-slate-800">Case Studies & Success Stories</h1>
-        <p class="text-slate-600 max-w-xl mx-auto">Discover how legal professionals and enterprises are accelerating their workflows and reducing drafting errors using Legal AI.</p>
-    </div>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col h-screen overflow-y-auto">
+<!-- Header -->
+<header class="bg-white dark:bg-background-dark border-b border-slate-200 dark:border-slate-800 px-8 py-6 sticky top-0 z-10">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div>
+<nav class="flex text-xs font-medium text-slate-500 mb-2 items-center gap-2">
+<a class="hover:text-primary" href="/dashboard">Dashboard</a>
+<span class="material-icons text-[12px]">chevron_right</span>
+<span class="text-primary">Case Studies</span>
+</nav>
+<h1 class="text-2xl font-bold text-slate-900 dark:text-white">Case Studies & Success Stories</h1>
+</div>
+<div class="flex items-center gap-3">
+<a href="/create" class="bg-primary text-white px-6 py-2 rounded-lg font-medium hover:bg-opacity-90 transition-all flex items-center gap-2 shadow-sm">
+<span class="material-icons text-[18px]">add_circle</span>
+Create New Draft
+</a>
+</div>
+</div>
+</header>
 
-    <div class="grid md:grid-cols-2 gap-8">
-        <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md transition-all">
-            <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-6">
-                <span class="material-icons">business</span>
-            </div>
-            <h2 class="text-2xl font-bold mb-3 text-slate-800">Law Firm Automation</h2>
-            <p class="text-slate-600 leading-relaxed mb-4">A mid-sized litigation firm specializing in civil and commercial disputes automated their initial legal notice drafting using our AI systems.</p>
-            <div class="border-t border-slate-100 pt-4 mt-4">
-                <p class="text-sm font-semibold text-blue-600">Results: Reduced notice drafting time by 60% and standardized language across 5 offices.</p>
-            </div>
-        </div>
+<!-- Content Area -->
+<div class="p-8 max-w-6xl mx-auto w-full">
+<p class="text-slate-600 dark:text-slate-400 text-lg mb-12 max-w-3xl">
+Discover how legal professionals and enterprises are accelerating their workflows and reducing drafting errors using Legal AI Assistant.
+</p>
 
-        <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md transition-all">
-            <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center mb-6">
-                <span class="material-icons">verified_user</span>
-            </div>
-            <h2 class="text-2xl font-bold mb-3 text-slate-800">Corporate Compliance</h2>
-            <p class="text-slate-600 leading-relaxed mb-4">An e-commerce enterprise integrated our drafting systems to automate vendor default notices, lease renewals, and non-disclosure agreements.</p>
-            <div class="border-t border-slate-100 pt-4 mt-4">
-                <p class="text-sm font-semibold text-emerald-600">Results: Standardized contract compliance, saving an average of 24 hours of external counsel reviews per month.</p>
-            </div>
-        </div>
-    </div>
+<div class="grid md:grid-cols-2 gap-8 mb-12">
+<!-- Case 1 -->
+<div class="bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 hover:shadow-lg hover:border-primary/30 transition-all">
+<div class="w-12 h-12 bg-primary/10 text-primary rounded-xl flex items-center justify-center mb-6">
+<span class="material-icons">business</span>
+</div>
+<span class="text-xs font-bold uppercase tracking-widest text-primary bg-primary/10 px-2 py-1 rounded mb-4 inline-block">Law Firm Automation</span>
+<h2 class="text-xl font-bold mb-3 text-slate-800 dark:text-white">Civil Litigation Practice — Bhopal</h2>
+<p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">A mid-sized litigation firm specializing in civil and commercial disputes automated their initial legal notice drafting using our AI systems, reducing document preparation from 3 hours to under 5 minutes per notice.</p>
+<div class="border-t border-slate-100 dark:border-slate-800 pt-4">
+<div class="flex items-center gap-2">
+<span class="material-icons text-emerald-500 text-sm">trending_up</span>
+<p class="text-sm font-semibold text-emerald-700 dark:text-emerald-400">60% reduction in drafting time across 5 offices</p>
+</div>
+</div>
+</div>
+
+<!-- Case 2 -->
+<div class="bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 hover:shadow-lg hover:border-primary/30 transition-all">
+<div class="w-12 h-12 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 rounded-xl flex items-center justify-center mb-6">
+<span class="material-icons">verified_user</span>
+</div>
+<span class="text-xs font-bold uppercase tracking-widest text-emerald-600 bg-emerald-50 dark:bg-emerald-900/30 px-2 py-1 rounded mb-4 inline-block">Corporate Compliance</span>
+<h2 class="text-xl font-bold mb-3 text-slate-800 dark:text-white">E-commerce Enterprise — Delhi NCR</h2>
+<p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">An e-commerce enterprise integrated our drafting systems to automate vendor default notices, lease renewals, and non-disclosure agreements across 200+ vendors.</p>
+<div class="border-t border-slate-100 dark:border-slate-800 pt-4">
+<div class="flex items-center gap-2">
+<span class="material-icons text-emerald-500 text-sm">schedule</span>
+<p class="text-sm font-semibold text-emerald-700 dark:text-emerald-400">24 hours saved on external counsel reviews per month</p>
+</div>
+</div>
+</div>
+
+<!-- Case 3 -->
+<div class="bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 hover:shadow-lg hover:border-primary/30 transition-all">
+<div class="w-12 h-12 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 rounded-xl flex items-center justify-center mb-6">
+<span class="material-icons">gavel</span>
+</div>
+<span class="text-xs font-bold uppercase tracking-widest text-indigo-600 bg-indigo-50 dark:bg-indigo-900/30 px-2 py-1 rounded mb-4 inline-block">Family Law Practice</span>
+<h2 class="text-xl font-bold mb-3 text-slate-800 dark:text-white">District Family Court — Indore</h2>
+<p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">A family law practice handling divorce and custody disputes used our 498A and divorce notice templates to standardize their client documentation processes.</p>
+<div class="border-t border-slate-100 dark:border-slate-800 pt-4">
+<div class="flex items-center gap-2">
+<span class="material-icons text-emerald-500 text-sm">star</span>
+<p class="text-sm font-semibold text-emerald-700 dark:text-emerald-400">100% consistency in notice formatting — zero errors reported</p>
+</div>
+</div>
+</div>
+
+<!-- Case 4 -->
+<div class="bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 hover:shadow-lg hover:border-primary/30 transition-all">
+<div class="w-12 h-12 bg-amber-50 dark:bg-amber-900/30 text-amber-600 rounded-xl flex items-center justify-center mb-6">
+<span class="material-icons">account_balance</span>
+</div>
+<span class="text-xs font-bold uppercase tracking-widest text-amber-600 bg-amber-50 dark:bg-amber-900/30 px-2 py-1 rounded mb-4 inline-block">Banking & Finance</span>
+<h2 class="text-xl font-bold mb-3 text-slate-800 dark:text-white">Cooperative Bank — Madhya Pradesh</h2>
+<p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">A cooperative bank used our Cheque Bounce Notice template (Sec. 138 NI Act) to generate and dispatch 300+ demand notices per quarter with a single staff member.</p>
+<div class="border-t border-slate-100 dark:border-slate-800 pt-4">
+<div class="flex items-center gap-2">
+<span class="material-icons text-emerald-500 text-sm">payments</span>
+<p class="text-sm font-semibold text-emerald-700 dark:text-emerald-400">₹2.3 crore recovered via AI-drafted demand notices in Q1</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- CTA Banner -->
+<div class="bg-primary rounded-2xl p-10 text-white text-center shadow-xl shadow-primary/20">
+<h3 class="text-2xl font-bold mb-3">Ready to Write Your Own Success Story?</h3>
+<p class="text-white/80 mb-6 max-w-xl mx-auto">Start generating professional legal notices in seconds. Join 500+ law firms already using Legal AI.</p>
+<a href="/create" class="inline-block bg-white text-primary font-bold px-8 py-3 rounded-xl hover:bg-slate-100 transition-colors">Create Your First Draft</a>
+</div>
+</div>
 </main>
-
-<footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-400">
-    <p>© 2026 Legal AI Drafting Systems Inc. All rights reserved.</p>
-</footer>
 
 </body>
 </html>
